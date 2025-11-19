@@ -1,0 +1,356 @@
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: personalfinance
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `bills`
+--
+
+DROP TABLE IF EXISTS `bills`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bills` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `typeofexpenseid` int DEFAULT NULL,
+  `summary` varchar(200) DEFAULT NULL,
+  `january` decimal(10,2) DEFAULT NULL,
+  `february` decimal(10,2) DEFAULT NULL,
+  `march` decimal(10,2) DEFAULT NULL,
+  `april` decimal(10,2) DEFAULT NULL,
+  `may` decimal(10,2) DEFAULT NULL,
+  `june` decimal(10,2) DEFAULT NULL,
+  `july` decimal(10,2) DEFAULT NULL,
+  `august` decimal(10,2) DEFAULT NULL,
+  `september` decimal(10,2) DEFAULT NULL,
+  `october` decimal(10,2) DEFAULT NULL,
+  `november` decimal(10,2) DEFAULT NULL,
+  `december` decimal(10,2) DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  `verified` tinyint(1) DEFAULT NULL,
+  `reserved` tinyint(1) DEFAULT NULL,
+  `paid` tinyint(1) DEFAULT NULL,
+  `observations` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fx_typeofexpenseid_typeofexpense_idx` (`typeofexpenseid`),
+  CONSTRAINT `fx_typeofexpenseid_typeofexpense` FOREIGN KEY (`typeofexpenseid`) REFERENCES `typeofexpense` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bills`
+--
+
+LOCK TABLES `bills` WRITE;
+/*!40000 ALTER TABLE `bills` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bills` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cards`
+--
+
+DROP TABLE IF EXISTS `cards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cards` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cardname` varchar(50) DEFAULT NULL,
+  `closingdate` datetime DEFAULT NULL,
+  `expirationdate` datetime DEFAULT NULL,
+  `entityid` int DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_entities_entityid_idx` (`entityid`),
+  CONSTRAINT `fk_entities_entityid` FOREIGN KEY (`entityid`) REFERENCES `entities` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cards`
+--
+
+LOCK TABLES `cards` WRITE;
+/*!40000 ALTER TABLE `cards` DISABLE KEYS */;
+INSERT INTO `cards` VALUES (1,'VISA RIO',NULL,NULL,1,1),(2,'AMERICAN EXPRESS RIO',NULL,NULL,1,1),(3,'VISA NX',NULL,NULL,2,1),(4,'MASTER CARD NX',NULL,NULL,2,1),(5,'VISA VIRTUAL NX',NULL,NULL,2,1),(6,'MASTER CARD MC',NULL,NULL,3,1);
+/*!40000 ALTER TABLE `cards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `category` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'GASTOS PRIMARIOS'),(2,'GASTOS SECUNDARIOS'),(3,'EDUCACION'),(4,'FAMILIA'),(5,'INVERSIONES'),(6,'JUDICIALES'),(7,'SALUD'),(8,'PRESTAMOS'),(9,'SERVICIOS');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `entities`
+--
+
+DROP TABLE IF EXISTS `entities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `entities` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `entity` varchar(100) DEFAULT NULL,
+  `entitytype` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `entities`
+--
+
+LOCK TABLES `entities` WRITE;
+/*!40000 ALTER TABLE `entities` DISABLE KEYS */;
+INSERT INTO `entities` VALUES (1,'SANTANDER RIO','RIO'),(2,'NARANJA X','NX'),(3,'MERCADO CREDITO','MP'),(4,'UALA','UA'),(5,'SATOSHITANGO','ST'),(6,'IOL','IOL');
+/*!40000 ALTER TABLE `entities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `income`
+--
+
+DROP TABLE IF EXISTS `income`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `income` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `incomedetailsid` int DEFAULT NULL,
+  `january` decimal(10,2) DEFAULT NULL,
+  `february` decimal(10,2) DEFAULT NULL,
+  `march` decimal(10,2) DEFAULT NULL,
+  `april` decimal(10,2) DEFAULT NULL,
+  `may` decimal(10,2) DEFAULT NULL,
+  `june` decimal(10,2) DEFAULT NULL,
+  `july` decimal(10,2) DEFAULT NULL,
+  `august` decimal(10,2) DEFAULT NULL,
+  `september` decimal(10,2) DEFAULT NULL,
+  `october` decimal(10,2) DEFAULT NULL,
+  `november` decimal(10,2) DEFAULT NULL,
+  `december` decimal(10,2) DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_incomedetails_incomedetails_idx` (`incomedetailsid`),
+  CONSTRAINT `fk_incomedetails_incomedetails` FOREIGN KEY (`incomedetailsid`) REFERENCES `incomedetails` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `income`
+--
+
+LOCK TABLES `income` WRITE;
+/*!40000 ALTER TABLE `income` DISABLE KEYS */;
+INSERT INTO `income` VALUES (1,1,795958.90,861797.20,919283.20,973091.90,1004917.10,1043296.10,1077159.41,1158031.60,1169385.80,1180738.90,1180738.90,1180738.90,2025),(2,2,1201109.34,1201109.34,1201109.34,1201109.34,1201109.34,1201109.34,1357418.27,1271572.39,1350729.57,1338695.29,1338695.29,1338695.29,2025),(3,4,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,36637.18,2025),(4,9,39797.95,43089.86,45964.16,58385.51,60295.03,62597.77,64629.56,69481.90,70163.15,70844.33,70844.33,70844.33,2025),(5,16,172791.95,203550.19,183582.82,189101.99,191913.22,195303.37,211320.37,211310.26,227666.03,218909.64,218909.64,218909.64,2025),(6,17,-247092.49,-291076.77,-262523.44,-270415.85,-274435.91,-279283.81,-302188.13,-302173.67,-325562.42,-313040.79,-313040.79,-313040.79,2025),(7,19,-67388.86,-79384.57,-71597.30,-73749.78,-74846.16,-76168.31,-82414.94,-82411.00,-88789.75,-85374.76,-85374.76,-85374.76,2025),(8,20,-75172.14,-86641.63,-76984.83,-77334.91,-77334.91,-77334.90,-82414.94,-83789.00,-90167.75,-86752.76,-86752.76,-86752.76,2025),(9,23,-50114.76,-57761.09,-51323.22,-51556.61,-51556.61,-51556.60,-54943.30,-55859.33,-60111.83,-57835.17,-57835.17,-57835.17,2025),(10,24,-12528.69,-14440.27,-12830.81,-12889.15,-12889.15,-12889.15,-13735.83,-13964.83,-15027.96,-14458.79,-14458.79,-14458.79,2025),(11,25,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,-100.00,2025),(12,26,-410668.18,-311040.00,-311040.00,-311040.00,-373248.00,-416099.47,-597069.27,-608760.58,-654974.63,-630233.03,-630233.03,-630233.03,2025),(13,36,228081.34,197356.59,157876.37,104067.79,72242.41,33863.31,0.00,0.00,0.00,0.00,0.00,0.00,2025),(14,37,11404.07,9867.83,7893.82,6244.07,4334.54,2031.80,0.00,2400.00,2400.00,2400.00,2400.00,2400.00,2025),(15,38,19957.12,17268.70,13814.18,9192.66,6381.41,2991.26,0.00,3533.33,3533.33,3533.33,3533.33,3533.33,2025),(16,46,49889.02,0.00,55591.68,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(17,47,0.00,362389.06,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(18,12,0.00,1799812.21,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(19,13,0.00,-1499843.51,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(20,48,0.00,99628.18,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(21,35,0.00,17408.68,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(22,45,0.00,-40810.43,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(23,49,0.00,239307.23,459938.00,285929.55,0.00,0.00,75000.00,293076.00,235800.00,0.00,0.00,0.00,2025),(24,50,0.00,0.00,128522.34,0.00,700000.00,0.00,0.00,247000.00,0.00,0.00,0.00,0.00,2025),(25,51,0.00,0.00,58051.02,0.00,300000.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(26,31,0.00,0.00,0.00,33471.21,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(27,11,0.00,0.00,0.00,0.00,1323076.24,0.00,0.00,0.00,0.00,0.00,800000.00,0.00,2025),(28,18,0.00,0.00,0.00,0.00,-145538.39,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(29,21,0.00,0.00,0.00,0.00,-39692.29,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(30,22,0.00,0.00,0.00,0.00,-43583.93,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(31,23,0.00,0.00,0.00,0.00,-29055.95,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(32,24,0.00,0.00,0.00,0.00,-7263.99,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(33,26,0.00,0.00,0.00,0.00,-237532.59,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(34,40,0.00,0.00,0.00,0.00,129721.27,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2025),(35,44,0.00,0.00,0.00,0.00,0.00,0.00,0.00,40000.00,40000.00,40000.00,40000.00,40000.00,2025),(36,3,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,105076.63,0.00,0.00,0.00,2025),(37,1,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(38,2,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(39,4,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(40,9,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(41,16,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(42,17,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(43,19,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(44,20,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(45,23,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(46,24,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(47,25,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(48,26,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(49,36,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(50,37,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(51,38,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(52,46,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(53,47,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(54,12,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(55,13,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(56,48,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(57,35,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(58,45,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(59,49,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(60,50,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(61,51,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(62,31,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(63,11,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(64,18,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(65,21,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(66,22,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(67,23,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(68,24,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(69,26,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(70,40,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(71,44,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026),(72,3,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,2026);
+/*!40000 ALTER TABLE `income` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `incomedetails`
+--
+
+DROP TABLE IF EXISTS `incomedetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `incomedetails` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` int DEFAULT NULL,
+  `detail` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `incomedetails`
+--
+
+LOCK TABLES `incomedetails` WRITE;
+/*!40000 ALTER TABLE `incomedetails` DISABLE KEYS */;
+INSERT INTO `incomedetails` VALUES (1,1,'SUELDO BASICO'),(2,4,'A CTA. DE FUTUROS AUMENTOS'),(3,13,'ART. 76 CCT 130/75'),(4,14,'ADICIONAL EMPRESA'),(5,20,'INCREMENTO SALARIAL - ACUERDO 2021'),(6,22,'ACUERDO 10-2020'),(7,37,'INCREMENTO SOLIDARIO.'),(8,38,'ACUERDO 2019-20'),(9,39,'ANTIGUEDAD'),(10,40,'DIAS NO TRABAJADOS INGRESO'),(11,79,'AGUINALDO'),(12,80,'VACACIONES'),(13,120,'DIAS VACACIONES S/BASICO'),(14,192,'AJUSTE AGUINALDO'),(15,197,'ADIC. ART.1° ACUERDO 07/10/2020'),(16,199,'PRESENTISMO'),(17,200,'JUBILACIÓN'),(18,201,'JUBILACIÓN (SAC)'),(19,203,'LEY NO. 19032'),(20,204,'OBRA SOCIAL'),(21,213,'LEY NO.19032 -SAC'),(22,214,'OBRA SOCIAL - SAC'),(23,215,'RETENCIÓN SINDICATO'),(24,216,'FAECYS'),(25,221,'APORTE EXTRAORDINARIO OS'),(26,229,'CUOTA ALIMENTARIA'),(27,245,'DESC. CLASES DE INGLES'),(28,246,'ANTICIPO DE SUELDO.'),(29,250,'AJUSTE IG AÑO ANTERIOR'),(30,251,'IMPUESTO A LAS GANANCIAS.'),(31,467,'AJUSTE IIGG.'),(32,468,'EXENCION IMP A LAS GCIAS 1° SAC 2023.'),(33,600,'ASIGNACION ACUERDO 05-2019'),(34,602,'ASIGNACION PRESENTISMO 05-2019'),(35,605,'AJUSTE - ACUERDO NO REMUNERATIVO.'),(36,609,'ACUERDO NO REMUNERATIVO.'),(37,610,'ANTIGUEDAD / ACUERDO.'),(38,611,'PRESENTIMOS SOBRE ACUERDO.'),(39,612,'AJUSTE - ACUERDO NO REMUNERATIVO.'),(40,614,'SAC S/ ACUERDO.'),(41,624,'INC NO REM - AC COMPLEMENTARIO ENERO2022'),(42,625,'INC. NO REMUNERATIVO - ACUERDO 2022'),(43,626,'AJUSTE RTR -INC. NO REM - ACUERDO 2022'),(44,630,'SUMA FIJA NO REMUNERATIVA'),(45,900,'RETENCIÓN IMP. GANANCIAS'),(46,901,'DEVOLUCIÓN IMP. GANACIAS'),(47,227,'DEVOLUCIÓN - CUOTA ALIMENTARIA'),(48,228,'AJUSTE - CUOTA ALIMENTARIA'),(49,1000,'PAYONNER'),(50,1001,'OTROS (SIN CALCULAR)'),(51,1002,'INVERSIONES');
+/*!40000 ALTER TABLE `incomedetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orderdetails`
+--
+
+DROP TABLE IF EXISTS `orderdetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orderdetails` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ordersid` int DEFAULT NULL,
+  `brand` varchar(45) DEFAULT NULL,
+  `productdetails` varchar(200) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `productcode` varchar(45) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `unitprice` decimal(10,2) DEFAULT NULL,
+  `subtotal` decimal(10,2) DEFAULT NULL,
+  `to` varchar(45) DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orderdetails`
+--
+
+LOCK TABLES `orderdetails` WRITE;
+/*!40000 ALTER TABLE `orderdetails` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orderdetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `number` int DEFAULT NULL,
+  `orderdate` datetime DEFAULT NULL,
+  `datereceived` datetime DEFAULT NULL,
+  `totalamount` decimal(10,2) DEFAULT NULL,
+  `resourcetype` varchar(45) DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `services`
+--
+
+DROP TABLE IF EXISTS `services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `services` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `servicename` varchar(100) DEFAULT NULL,
+  `unit` int DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `validity` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `services`
+--
+
+LOCK TABLES `services` WRITE;
+/*!40000 ALTER TABLE `services` DISABLE KEYS */;
+INSERT INTO `services` VALUES (1,'PSICOLOGA',2,27000.00,'2025-12-01 00:00:00'),(2,'SERVICIOS AMOC',1,17400.00,'2025-12-01 00:00:00'),(3,'MICROSOFT 365',1,5656.77,'2025-12-01 00:00:00'),(4,'SPOTIFY FAMILIAR',1,6424.47,'2025-12-01 00:00:00'),(5,'YOUTUBE PREMIUN',1,5200.47,'2025-12-01 00:00:00'),(6,'LINKEDIN',1,5506.47,'2025-12-01 00:00:00'),(7,'PERSONAL 4G',1,20000.00,'2025-12-01 00:00:00'),(8,'VIATICOS HIJOS',1,20000.00,'2025-12-01 00:00:00'),(9,'EDENOR (LUZ)',1,20000.00,'2025-12-01 00:00:00');
+/*!40000 ALTER TABLE `services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typeofexpense`
+--
+
+DROP TABLE IF EXISTS `typeofexpense`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typeofexpense` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type` varchar(200) DEFAULT NULL,
+  `categoriesid` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fx_typeofexpense_categoriesid_idx` (`categoriesid`),
+  CONSTRAINT `fx_typeofexpense_categoriesid` FOREIGN KEY (`categoriesid`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typeofexpense`
+--
+
+LOCK TABLES `typeofexpense` WRITE;
+/*!40000 ALTER TABLE `typeofexpense` DISABLE KEYS */;
+INSERT INTO `typeofexpense` VALUES (1,'CUOTA ALIMENTARIA',1),(2,'ALQUILER',1),(3,'MEDICAMENTOS',1),(4,'GASTOS GENERALES HOGAR',1),(5,'UTILES ESCOLARES',4),(6,'SALIDAS C/HIJOS',4),(7,'CARGA DE CELULARES',2),(8,'ACTIVIDADES PERSONALES',2),(9,'RESUMEN TC BCO RIO AMEX',1),(10,'RESUMEN TC BCO RIO VISA',1),(11,'RESUMEN TC NX VISA VIRTUAL',1),(12,'RESUMEN TC NX VISA',1),(13,'RESUMEN TC NX MASTER CARD',1),(14,'RESUMEN MP CREDITO',1),(15,'VIATICOS HIJOS',4),(16,'GIMNASIO',7),(17,'AYUDA ESPIRITUAL',9),(18,'ELECTRODOMESTICOS',2),(19,'EDUCACION Y FORMACION',3),(20,'INVERSIONES',5),(21,'ABOGADAS',6),(22,'PSICOLOGA',7),(23,'MASOTERAPIA',7),(24,'SEGUROS DE VIDA',9),(25,'SEGUROS ROBO CAJERO',9),(26,'PERSONAL 4G',9),(27,'TELECENTRO WIFI',9),(28,'SERVICIOS AMOC',9),(29,'MICROSOFT 365',9),(30,'SPOTIFY FAMILIAR',9),(31,'YOUTUBE PREMIUN',9),(32,'LINKEDIN',9),(33,'MERCADO LIBRE DEBITO',1),(34,'COSMETICOS AVON',2),(35,'EDENOR (LUZ)',1),(36,'PRESTAMOS NX',8);
+/*!40000 ALTER TABLE `typeofexpense` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nick` varchar(45) DEFAULT NULL,
+  `lasname` varchar(45) DEFAULT NULL,
+  `firstname` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'ark7511','Andres','Kamycki','andres.kamycki@gmail.com','7511',1);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-11-19  1:57:20
