@@ -225,7 +225,8 @@ BEGIN
 		c.`expirationdate`,
 		c.`entityid`,
 		c.`active`,
-		e.`entity`
+		e.`entity`,
+        e.`entitytype`
 	FROM `cards` AS c
 	INNER JOIN `entities` AS e ON c.`entityid` = e.`id`;
 
@@ -255,7 +256,8 @@ BEGIN
 		c.`expirationdate`,
 		c.`entityid`,
 		c.`active`,
-		e.`entity`
+		e.`entity`,
+        e.`entitytype`
 	FROM `cards` AS c
 	INNER JOIN `entities` AS e ON c.`entityid` = e.`id`
     WHERE c.`id` = pId ;
@@ -949,4 +951,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-25 15:37:59
+-- Dump completed on 2025-11-25 15:59:00
