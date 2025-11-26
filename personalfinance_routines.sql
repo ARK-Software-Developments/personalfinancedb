@@ -180,6 +180,220 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsAdd` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsAdd`(
+	pTypeofexpenseid INT,
+	pSummary VARCHAR(200),
+	pJanuary DECIMAL(10,2),
+	pFebruary DECIMAL(10,2),
+	pMarch DECIMAL(10,2),
+	pApril DECIMAL(10,2),
+	pMay DECIMAL(10,2),
+	pJune DECIMAL(10,2),
+	pJuly DECIMAL(10,2),
+	pAugust DECIMAL(10,2),
+	pSeptember DECIMAL(10,2),
+	pOctober DECIMAL(10,2),
+	pNovember DECIMAL(10,2),
+	pDecember DECIMAL(10,2),
+	pWallet INT,
+	pVerified TINYINT(1),
+	pReserved TINYINT(1),
+	pPaid TINYINT(1),
+	pYear INT,
+	pObservations VARCHAR(255),
+	pActive TINYINT(1)
+)
+BEGIN
+	INSERT INTO `bills` 
+		(`typeofexpenseid`, `summary`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `wallet`, `verified`, `reserved`, `paid`, `year`, `observations`, `active`)
+	VALUES
+		(pTypeofexpenseid, pSummary, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, pObservations, pActive);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsGetAll` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsGetAll`(
+	IN pYear INT,
+    IN pActive TINYINT(1)
+)
+BEGIN
+	SELECT `b`.`id`,
+		`b`.`typeofexpenseid`,
+        `toe`.`type`,
+        `toe`.`categoriesid`,
+        `c`.`category`,
+		`b`.`summary`,
+		`b`.`january`,
+		`b`.`february`,
+		`b`.`march`,
+		`b`.`april`,
+		`b`.`may`,
+		`b`.`june`,
+		`b`.`july`,
+		`b`.`august`,
+		`b`.`september`,
+		`b`.`october`,
+		`b`.`november`,
+		`b`.`december`,
+		`b`.`wallet`,
+        `e`.`entity`,
+        `e`.`entitytype`,
+		`b`.`verified`,
+		`b`.`reserved`,
+		`b`.`paid`,
+		`b`.`year`,
+		`b`.`observations`,
+		`b`.`active`
+	FROM `bills` AS b    
+    INNER JOIN `typeofexpense` AS toe ON `b`.`typeofexpenseid` = `toe`.`id`
+    INNER JOIN `categories` AS c ON  `toe`.`categoriesid` =  `c`.`id`
+    INNER JOIN `entities` AS e ON  `b`.`wallet` =  `e`.`id`
+    WHERE `b`.`year` = pYear AND `b`.`active` = pActive;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsGetId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsGetId`(
+	IN pId INT
+)
+BEGIN
+	SELECT `b`.`id`,
+		`b`.`typeofexpenseid`,
+        `toe`.`type`,
+        `toe`.`categoriesid`,
+        `c`.`category`,
+		`b`.`summary`,
+		`b`.`january`,
+		`b`.`february`,
+		`b`.`march`,
+		`b`.`april`,
+		`b`.`may`,
+		`b`.`june`,
+		`b`.`july`,
+		`b`.`august`,
+		`b`.`september`,
+		`b`.`october`,
+		`b`.`november`,
+		`b`.`december`,
+		`b`.`wallet`,
+        `e`.`entity`,
+        `e`.`entitytype`,
+		`b`.`verified`,
+		`b`.`reserved`,
+		`b`.`paid`,
+		`b`.`year`,
+		`b`.`observations`,
+		`b`.`active`
+	FROM `bills` AS b    
+    INNER JOIN `typeofexpense` AS toe ON `b`.`typeofexpenseid` = `toe`.`id`
+    INNER JOIN `categories` AS c ON  `toe`.`categoriesid` =  `c`.`id`
+    INNER JOIN `entities` AS e ON  `b`.`wallet` =  `e`.`id`
+    WHERE `b`.`id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsUpdate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsUpdate`(
+	pId INT,
+    pTypeofexpenseid INT,
+	pSummary VARCHAR(200),
+	pJanuary DECIMAL(10,2),
+	pFebruary DECIMAL(10,2),
+	pMarch DECIMAL(10,2),
+	pApril DECIMAL(10,2),
+	pMay DECIMAL(10,2),
+	pJune DECIMAL(10,2),
+	pJuly DECIMAL(10,2),
+	pAugust DECIMAL(10,2),
+	pSeptember DECIMAL(10,2),
+	pOctober DECIMAL(10,2),
+	pNovember DECIMAL(10,2),
+	pDecember DECIMAL(10,2),
+	pWallet INT,
+	pVerified TINYINT(1),
+	pReserved TINYINT(1),
+	pPaid TINYINT(1),
+	pYear INT,
+	pObservations VARCHAR(255),
+	pActive TINYINT(1)
+)
+BEGIN
+	UPDATE `bills`
+	SET
+	`typeofexpenseid` = pTypeofexpenseid,
+	`summary` = pSummary,
+	`january` = pJanuary,
+	`february` = pFebruary,
+	`march` = pMarch,
+	`april` = pApril,
+	`may` = pMay,
+	`june` = pJune,
+	`july` = pJuly,
+	`august` = pAugust,
+	`september` = pSeptember,
+	`october` = pOctober,
+	`november` = pNovember,
+	`december` = pDecember,
+	`wallet` = pWallet,
+	`verified` = pVerified,
+	`reserved` = pReserved,
+	`paid` = pPaid,
+	`year` = pYear,
+	`observations` = pObservations,
+	`active` = pActive
+	WHERE `id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spCardsGetAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1268,4 +1482,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-26 13:50:26
+-- Dump completed on 2025-11-26 15:45:48
