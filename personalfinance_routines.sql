@@ -242,6 +242,7 @@ BEGIN
 	SELECT `b`.`id`,
 		`b`.`typeofexpenseid`,
         `toe`.`type`,
+        `toe`.`categoriesid`,
         `c`.`category`,
 		`b`.`summary`,
 		`b`.`january`,
@@ -257,6 +258,8 @@ BEGIN
 		`b`.`november`,
 		`b`.`december`,
 		`b`.`wallet`,
+        `e`.`entity`,
+        `e`.`entitytype`,
 		`b`.`verified`,
 		`b`.`reserved`,
 		`b`.`paid`,
@@ -266,6 +269,7 @@ BEGIN
 	FROM `bills` AS b    
     INNER JOIN `typeofexpense` AS toe ON `b`.`typeofexpenseid` = `toe`.`id`
     INNER JOIN `categories` AS c ON  `toe`.`categoriesid` =  `c`.`id`
+    INNER JOIN `entities` AS e ON  `b`.`wallet` =  `e`.`id`
     WHERE `b`.`year` = pYear AND `b`.`active` = pActive;
 END ;;
 DELIMITER ;
@@ -290,6 +294,7 @@ BEGIN
 	SELECT `b`.`id`,
 		`b`.`typeofexpenseid`,
         `toe`.`type`,
+        `toe`.`categoriesid`,
         `c`.`category`,
 		`b`.`summary`,
 		`b`.`january`,
@@ -305,6 +310,8 @@ BEGIN
 		`b`.`november`,
 		`b`.`december`,
 		`b`.`wallet`,
+        `e`.`entity`,
+        `e`.`entitytype`,
 		`b`.`verified`,
 		`b`.`reserved`,
 		`b`.`paid`,
@@ -314,6 +321,7 @@ BEGIN
 	FROM `bills` AS b    
     INNER JOIN `typeofexpense` AS toe ON `b`.`typeofexpenseid` = `toe`.`id`
     INNER JOIN `categories` AS c ON  `toe`.`categoriesid` =  `c`.`id`
+    INNER JOIN `entities` AS e ON  `b`.`wallet` =  `e`.`id`
     WHERE `b`.`id` = pId;
 END ;;
 DELIMITER ;
@@ -1474,4 +1482,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-26 14:38:39
+-- Dump completed on 2025-11-26 15:45:48
