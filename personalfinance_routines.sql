@@ -394,6 +394,206 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtAdd` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreditCardSpendingtAdd`(
+	pCardsId INT,
+	pPurchasingEntity VARCHAR(100),
+	pTransactionCodeId INT,
+	pDetails VARCHAR(255),
+	pNumberInstallments INT,
+	pJanuary DECIMAL(10,2),
+	pFebruary DECIMAL(10,2),
+	pMarch DECIMAL(10,2),
+	pApril DECIMAL(10,2),
+	pMay DECIMAL(10,2),
+	pJune DECIMAL(10,2),
+	pJuly DECIMAL(10,2),
+	pAugust DECIMAL(10,2),
+	pSeptember DECIMAL(10,2),
+	pOctober DECIMAL(10,2),
+	pNovember DECIMAL(10,2),
+	pDecember DECIMAL(10,2),
+	pYear INT,
+	pVerified TINYINT(1),
+	pPaid TINYINT(1)
+)
+BEGIN
+	INSERT INTO `creditcardspending`
+		(`cardsid`, `purchasingentity`, `transactioncodeid`, `details`, `numberinstallments`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `year`, `verified`, `paid`)
+	VALUES
+		(pCardsId, pPurchasingEntity, pTransactionCodeId, pDetails, pNumberInstallments, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pYear, pVerified, pPaid);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtGetAll` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreditCardSpendingtGetAll`(
+	IN pYear INT
+)
+BEGIN
+	SELECT `ccp`.`id`,
+		`ccp`.`cardsid`,
+		`c`.`cardname`,
+		`ccp`.`purchasingentity`,
+		`ccp`.`transactioncodeid`,
+		`t`.`associatedentity`,
+		`ccp`.`details`,
+		`ccp`.`numberinstallments`,
+		`ccp`.`january`,
+		`ccp`.`february`,
+		`ccp`.`march`,
+		`ccp`.`april`,
+		`ccp`.`may`,
+		`ccp`.`june`,
+		`ccp`.`july`,
+		`ccp`.`august`,
+		`ccp`.`september`,
+		`ccp`.`october`,
+		`ccp`.`november`,
+		`ccp`.`december`,
+		`ccp`.`year`,
+		`ccp`.`verified`,
+		`ccp`.`paid`
+	FROM `creditcardspending` AS ccp
+	INNER JOIN `cards` AS c ON ccp.cardsid = c.id
+	INNER JOIN `transactions` AS t ON ccp.transactioncodeid = t.id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtGetId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreditCardSpendingtGetId`(
+	IN pId INT
+)
+BEGIN
+	SELECT `ccp`.`id`,
+		`ccp`.`cardsid`,
+		`c`.`cardname`,
+		`ccp`.`purchasingentity`,
+		`ccp`.`transactioncodeid`,
+		`t`.`associatedentity`,
+		`ccp`.`details`,
+		`ccp`.`numberinstallments`,
+		`ccp`.`january`,
+		`ccp`.`february`,
+		`ccp`.`march`,
+		`ccp`.`april`,
+		`ccp`.`may`,
+		`ccp`.`june`,
+		`ccp`.`july`,
+		`ccp`.`august`,
+		`ccp`.`september`,
+		`ccp`.`october`,
+		`ccp`.`november`,
+		`ccp`.`december`,
+		`ccp`.`year`,
+		`ccp`.`verified`,
+		`ccp`.`paid`
+	FROM `creditcardspending` AS ccp
+	INNER JOIN `cards` AS c ON ccp.cardsid = c.id
+	INNER JOIN `transactions` AS t ON ccp.transactioncodeid = t.id
+    WHERE `ccp`.`id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtUpdate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreditCardSpendingtUpdate`(
+	pId INT,
+    pCardsId INT,
+	pPurchasingEntity VARCHAR(100),
+	pTransactionCodeId INT,
+	pDetails VARCHAR(255),
+	pNumberInstallments INT,
+	pJanuary DECIMAL(10,2),
+	pFebruary DECIMAL(10,2),
+	pMarch DECIMAL(10,2),
+	pApril DECIMAL(10,2),
+	pMay DECIMAL(10,2),
+	pJune DECIMAL(10,2),
+	pJuly DECIMAL(10,2),
+	pAugust DECIMAL(10,2),
+	pSeptember DECIMAL(10,2),
+	pOctober DECIMAL(10,2),
+	pNovember DECIMAL(10,2),
+	pDecember DECIMAL(10,2),
+	pYear INT,
+	pVerified TINYINT(1),
+	pPaid TINYINT(1)
+)
+BEGIN
+	UPDATE `creditcardspending` 
+SET 
+    `cardsid` = pCardsId,
+    `purchasingentity` = pPurchasingEntity,
+    `transactioncodeid` = pTransactionCodeId,
+    `details` = pDetails,
+    `numberinstallments` = pNumberInstallments,
+    `january` = pJanuary,
+    `february` = pFebruary,
+    `march` = pMarch,
+    `april` = pApril,
+    `may` = pMay,
+    `june` = pJune,
+    `july` = pJuly,
+    `august` = pAugust,
+    `september` = pSeptember,
+    `october` = pOctober,
+    `november` = pNovember,
+    `december` = pDecember,
+    `year` = pYear,
+    `verified` = pVerified,
+    `paid` = pPaid
+WHERE
+    `id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spEntitiesAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1068,4 +1268,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-25 17:25:24
+-- Dump completed on 2025-11-26 13:50:26
