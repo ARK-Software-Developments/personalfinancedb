@@ -907,6 +907,43 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spIncomeAdd` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIncomeAdd`(
+	IN pIncomeDetailsId INT,
+	IN pJanuary DECIMAL(10,2),
+	IN pFebruary DECIMAL(10,2),
+	IN pMarch DECIMAL(10,2),
+	IN pApril DECIMAL(10,2),
+	IN pMay DECIMAL(10,2),
+	IN pJune DECIMAL(10,2),
+	IN pJuly DECIMAL(10,2),
+	IN pAugust DECIMAL(10,2),
+	IN pSeptember DECIMAL(10,2),
+	IN pOctober DECIMAL(10,2),
+	IN pNovember DECIMAL(10,2),
+	IN pDecember DECIMAL(10,2),
+	IN pYear INT
+)
+BEGIN
+	INSERT INTO `income`
+		(`incomedetailsid`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `year`)
+	VALUES 
+		(pIncomeDetailsId, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pYear);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spIncomeDetailsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -997,6 +1034,137 @@ BEGIN
 	SET
 	`code` = pCode,
 	`detail` = pDetail
+	WHERE `id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spIncomeGetAll` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIncomeGetAll`(
+	IN pYear INT
+)
+BEGIN
+	SELECT `i`.`id`,
+		`i`.`incomedetailsid`,
+        `d`.`code`,
+        `d`.`detail`,
+		`i`.`january`,
+		`i`.`february`,
+		`i`.`march`,
+		`i`.`april`,
+		`i`.`may`,
+		`i`.`june`,
+		`i`.`july`,
+		`i`.`august`,
+		`i`.`september`,
+		`i`.`october`,
+		`i`.`november`,
+		`i`.`december`,
+		`i`.`year`
+	FROM `income` i
+    INNER JOIN `incomedetails` AS d ON `i`.`incomedetailsid` = `d`.`id`
+    WHERE `i`.`year` = pYear;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spIncomeGetId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIncomeGetId`(
+	IN pId INT
+)
+BEGIN
+	SELECT `i`.`id`,
+		`i`.`incomedetailsid`,
+        `d`.`code`,
+        `d`.`detail`,
+		`i`.`january`,
+		`i`.`february`,
+		`i`.`march`,
+		`i`.`april`,
+		`i`.`may`,
+		`i`.`june`,
+		`i`.`july`,
+		`i`.`august`,
+		`i`.`september`,
+		`i`.`october`,
+		`i`.`november`,
+		`i`.`december`,
+		`i`.`year`
+	FROM `income` i
+    INNER JOIN `incomedetails` AS d ON `i`.`incomedetailsid` = `d`.`id`
+    WHERE `i`.`id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spIncomeUpdate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIncomeUpdate`(
+	IN pId INT,
+	IN pIncomeDetailsId INT,
+	IN pJanuary DECIMAL(10,2),
+	IN pFebruary DECIMAL(10,2),
+	IN pMarch DECIMAL(10,2),
+	IN pApril DECIMAL(10,2),
+	IN pMay DECIMAL(10,2),
+	IN pJune DECIMAL(10,2),
+	IN pJuly DECIMAL(10,2),
+	IN pAugust DECIMAL(10,2),
+	IN pSeptember DECIMAL(10,2),
+	IN pOctober DECIMAL(10,2),
+	IN pNovember DECIMAL(10,2),
+	IN pDecember DECIMAL(10,2),
+	IN pYear INT
+)
+BEGIN
+	UPDATE `income`
+	SET
+	`incomedetailsid` = pIncomedetailsid,
+	`january` = pJanuary,
+	`february` = pFebruary,
+	`march` = pMarch,
+	`april` = pApril,
+	`may` = pMay,
+	`june` = pJune,
+	`july` = pJuly,
+	`august` = pAugust,
+	`september` = pSeptember,
+	`october` = pOctober,
+	`november` = pNovember,
+	`december` = pDecember,
+	`year` = pYear
 	WHERE `id` = pId;
 END ;;
 DELIMITER ;
@@ -1579,4 +1747,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-27 11:50:12
+-- Dump completed on 2025-11-27 15:02:31
