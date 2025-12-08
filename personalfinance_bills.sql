@@ -47,9 +47,9 @@ CREATE TABLE `bills` (
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fx_typeofexpenseid_typeofexpense_idx` (`typeofexpenseid`),
-  KEY `fx_wallet_typeofexpense_idx` (`wallet`),
+  KEY `fx_wallet_entities_idx` (`wallet`),
   CONSTRAINT `fx_typeofexpenseid_typeofexpense` FOREIGN KEY (`typeofexpenseid`) REFERENCES `typeofexpense` (`id`),
-  CONSTRAINT `fx_wallet_typeofexpense` FOREIGN KEY (`wallet`) REFERENCES `typeofexpense` (`id`)
+  CONSTRAINT `fx_wallet_entities` FOREIGN KEY (`wallet`) REFERENCES `entities` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -72,4 +72,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-24 13:16:34
+-- Dump completed on 2025-12-08 20:07:28

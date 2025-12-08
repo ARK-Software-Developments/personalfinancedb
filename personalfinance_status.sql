@@ -16,27 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categories`
+-- Table structure for table `status`
 --
 
-DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `status`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories` (
+CREATE TABLE `status` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `category` varchar(50) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `entityname` varchar(45) DEFAULT NULL,
+  `order` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `categories`
+-- Dumping data for table `status`
 --
 
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'GASTOS PRIMARIOS'),(2,'GASTOS SECUNDARIOS'),(3,'EDUCACION'),(4,'FAMILIA'),(5,'INVERSIONES'),(6,'JUDICIALES'),(7,'SALUD'),(8,'PRESTAMOS'),(9,'SERVICIOS');
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+LOCK TABLES `status` WRITE;
+/*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO `status` VALUES (1,'PENDIENTE','ORDERS|ORDERDETAILS',1),(2,'PEDIDO','ORDERS|ORDERDETAILS',2),(3,'PAGADO','ORDERS|ORDERDETAILS',3),(4,'RECIBIDO','ORDERS|ORDERDETAILS',4),(5,'CANCELADO','ORDERS|ORDERDETAILS',5),(6,'NO RECIBIDO','ORDERS|ORDERDETAILS',6);
+/*!40000 ALTER TABLE `status` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-08 20:07:29
+-- Dump completed on 2025-12-08 20:07:28

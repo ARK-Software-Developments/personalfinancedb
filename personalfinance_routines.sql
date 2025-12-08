@@ -16,6 +16,10 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Dumping events for database 'personalfinance'
+--
+
+--
 -- Dumping routines for database 'personalfinance'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `spBalanceAdd` */;
@@ -1172,6 +1176,87 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spMainMenusGetAll` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spMainMenusGetAll`()
+BEGIN
+	SELECT `id`,
+    `name`,
+    `title`,
+    `action`,
+    `level`,
+    `parentid`
+	FROM `mainmenus`; 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spMainMenusGetAllByLevel` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spMainMenusGetAllByLevel`(
+	IN pLevel INT
+)
+BEGIN
+	SELECT `id`,
+    `name`,
+    `title`,
+    `action`,
+    `level`,
+    `parentid`
+	FROM `mainmenus`
+    WHERE `level` = pLevel; 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spMainMenusGetAllByParentId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spMainMenusGetAllByParentId`(
+	IN pParentId INT
+)
+BEGIN
+	SELECT `id`,
+    `name`,
+    `title`,
+    `action`,
+    `level`,
+    `parentid`
+	FROM `mainmenus`
+    WHERE `parentid` = pParentId; 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spOrderDetailsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1192,10 +1277,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsAdd`(
     IN pUnitPrice DECIMAL(10,2),
     IN pSubTotal DECIMAL(10,2),
     IN pTo VARCHAR(45),
-    IN pStatus VARCHAR(45)
+    IN pStatus INT
 )
 BEGIN
-	INSERT INTO `orderdetails` (`ordersid`, `brand`, `productdetails`, `description`, `productcode`, `quantity`, `unitprice`, `subtotal`, `to`, `status`)
+	INSERT INTO `orderdetails` (`ordersid`, `brand`, `productdetails`, `description`, `productcode`, `quantity`, `unitprice`, `subtotal`, `to`, `statusid`)
 	VALUES (pOrderId, pBrand, pProductDetails, pDescription, pProductCode, pQuantity, pUnitPrice, pSubTotal, pTo, pStatus);
 END ;;
 DELIMITER ;
@@ -1215,18 +1300,22 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsGetAll`()
 BEGIN
-	SELECT `id`,
-    `ordersid`,
-    `brand`,
-    `productdetails`,
-    `description`,
-    `productcode`,
-    `quantity`,
-    `unitprice`,
-    `subtotal`,
-    `to`,
-    `status`
-	FROM `orderdetails`;
+	SELECT `od`.`id`,
+    `od`.`ordersid`,
+    `od`.`brand`,
+    `od`.`productdetails`,
+    `od`.`description`,
+    `od`.`productcode`,
+    `od`.`quantity`,
+    `od`.`unitprice`,
+    `od`.`subtotal`,
+    `od`.`to`,
+    `od`.`statusid`,
+    `s`.`name`,
+    `s`.`entityname`,
+    `s`.`order`
+	FROM `orderdetails` AS od
+    INNER JOIN `status` s ON `od`.`statusid` = s.`id`;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1247,19 +1336,60 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsGetId`(
 	IN pId INT
 )
 BEGIN
-	SELECT `id`,
-    `ordersid`,
-    `brand`,
-    `productdetails`,
-    `description`,
-    `productcode`,
-    `quantity`,
-    `unitprice`,
-    `subtotal`,
-    `to`,
-    `status`
-	FROM `orderdetails`
-    WHERE `id` = pId;
+	SELECT `od`.`id`,
+    `od`.`ordersid`,
+    `od`.`brand`,
+    `od`.`productdetails`,
+    `od`.`description`,
+    `od`.`productcode`,
+    `od`.`quantity`,
+    `od`.`unitprice`,
+    `od`.`subtotal`,
+    `od`.`to`,
+    `od`.`statusid`,
+    `s`.`name`,
+    `s`.`entityname`,
+    `s`.`order`
+	FROM `orderdetails` AS od
+    INNER JOIN `status` s ON `od`.`statusid` = s.`id`
+    WHERE `od`.`id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spOrderDetailsGetOrderId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsGetOrderId`(
+	IN pOrderId INT
+)
+BEGIN
+	SELECT `od`.`id`,
+    `od`.`ordersid`,
+    `od`.`brand`,
+    `od`.`productdetails`,
+    `od`.`description`,
+    `od`.`productcode`,
+    `od`.`quantity`,
+    `od`.`unitprice`,
+    `od`.`subtotal`,
+    `od`.`to`,
+    `od`.`statusid`,
+    `s`.`name`,
+    `s`.`entityname`,
+    `s`.`order`
+	FROM `orderdetails` AS od
+    INNER JOIN `status` s ON `od`.`statusid` = s.`id`
+    WHERE `ordersid` = pOrderId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1286,7 +1416,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsUpdate`(
     IN pUnitPrice DECIMAL(10,2),
     IN pSubTotal DECIMAL(10,2),
     IN pTo VARCHAR(45),
-    IN pStatus VARCHAR(45)
+    IN pStatus INT
 )
 BEGIN
 	UPDATE `orderdetails`
@@ -1299,7 +1429,7 @@ BEGIN
 	`unitprice` = pUnitPrice,
 	`subtotal` = pSubTotal,
 	`to` = pTo,
-	`status` = pStatus
+	`statusid` = pStatus
 	WHERE `id` = pId;
 END ;;
 DELIMITER ;
@@ -1322,10 +1452,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersAdd`(
     IN pFechaPedido DATETIME,
     IN pMontoTotal DECIMAL(10,2),
     IN pTipoRecurso VARCHAR(45),
-    IN pEstado VARCHAR(45)
+    IN pEstado INT
 )
 BEGIN
-	INSERT INTO `orders` (`number`, `orderdate`, `totalamount`, `resourcetype`, `status`)
+	INSERT INTO `orders` (`number`, `orderdate`, `totalamount`, `resourcetype`, `statusid`)
 	VALUES (pNumero, pFechaPedido, pMontoTotal, pTipoRecurso, pEstado);
 END ;;
 DELIMITER ;
@@ -1345,14 +1475,18 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersGetAll`()
 BEGIN
-	SELECT `id`,
-    `number`,
-    `orderdate`,
-    `datereceived`,
-    `totalamount`,
-    `resourcetype`,
-    `status`
-	FROM `orders`;
+	SELECT `o`.`id`,
+    `o`.`number`,
+    `o`.`orderdate`,
+    `o`.`datereceived`,
+    `o`.`totalamount`,
+    `o`.`resourcetype`,
+    `o`.`statusid`,
+    `s`.`name`,
+    `s`.`entityname`,
+    `s`.`order`
+	FROM `orders` AS o
+    INNER JOIN `status` s ON o.`statusid` = s.`id`;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1373,15 +1507,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersGetId`(
 	IN pId INT
 )
 BEGIN
-	SELECT `id`,
-    `number`,
-    `orderdate`,
-    `datereceived`,
-    `totalamount`,
-    `resourcetype`,
-    `status`
-	FROM `orders`
-    WHERE `id` = pId;
+	SELECT `o`.`id`,
+    `o`.`number`,
+    `o`.`orderdate`,
+    `o`.`datereceived`,
+    `o`.`totalamount`,
+    `o`.`resourcetype`,
+    `o`.`statusid`,
+    `s`.`name`,
+    `s`.`entityname`,
+    `s`.`order`
+	FROM `orders` AS o
+    INNER JOIN `status` s ON o.`statusid` = s.`id`
+    WHERE `o`.`id` = pId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1402,14 +1540,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersUpdate`(
 	IN pId INT,
     IN pFechaRecibido DATETIME,
     IN pMontoTotal DECIMAL(10,2),
-    IN pEstado VARCHAR(45)
+    IN pEstado INT
 )
 BEGIN
 	UPDATE `orders`
 	SET
 	`datereceived` = pFechaRecibido,
 	`totalamount` = pMontoTotal,
-	`status` = pEstado
+	`statusid` = pEstado
 	WHERE `id` = pId;
 END ;;
 DELIMITER ;
@@ -1519,6 +1657,29 @@ BEGIN
 		`validity` = pValidoDesde
 		WHERE `id` = pId;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spStatusGetAll` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spStatusGetAll`()
+BEGIN
+	SELECT `id`,
+    `name`,
+    `entityname`,
+    `order`
+	FROM `status`;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1747,4 +1908,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-27 15:02:31
+-- Dump completed on 2025-12-08 20:07:29

@@ -16,27 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categories`
+-- Table structure for table `mainmenus`
 --
 
-DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `mainmenus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `categories` (
+CREATE TABLE `mainmenus` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `category` varchar(50) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `title` varchar(45) DEFAULT NULL,
+  `action` varchar(45) DEFAULT NULL,
+  `level` int DEFAULT NULL,
+  `parentid` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `categories`
+-- Dumping data for table `mainmenus`
 --
 
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'GASTOS PRIMARIOS'),(2,'GASTOS SECUNDARIOS'),(3,'EDUCACION'),(4,'FAMILIA'),(5,'INVERSIONES'),(6,'JUDICIALES'),(7,'SALUD'),(8,'PRESTAMOS'),(9,'SERVICIOS');
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+LOCK TABLES `mainmenus` WRITE;
+/*!40000 ALTER TABLE `mainmenus` DISABLE KEYS */;
+INSERT INTO `mainmenus` VALUES (1,'Inicio','Inicio','/',1,0),(2,'Ingresos','Ingresos','/incomes',1,0),(3,'Egresos','Egresos','/bills',1,0),(4,'Haberes','Entidades Mensuales','/income',2,2),(5,'Inversiones','Inversiones','/investments',2,2),(6,'Pedidos','Pedidos','/orders',2,3),(7,'Servicios','Servicios','/services',2,3),(8,'Compras Tarjetas','Compras de Tarjetas','/creditcardspending',2,3);
+/*!40000 ALTER TABLE `mainmenus` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-08 20:07:29
+-- Dump completed on 2025-12-08 20:07:28
