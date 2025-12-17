@@ -398,7 +398,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `spCardsGetAdd` */;
+/*!50003 DROP PROCEDURE IF EXISTS `spCardsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -408,7 +408,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCardsGetAdd`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCardsAdd`(
 	IN pCardName VARCHAR(50),
     IN pClosingDate DATETIME,
     IN pExpirationDate DATETIME,
@@ -417,7 +417,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spCardsGetAdd`(
 )
 BEGIN
 		INSERT INTO `cards` (`cardname`, `closingdate`, `expirationdate`, `entityid`, `active`)
-		VALUES (pCardName, pClosingDate, pExpirationDate, pEntityId, pActivo);
+		VALUES (pCardName, pClosingDate, pExpirationDate, pEntityId, pActive);
 
 END ;;
 DELIMITER ;
@@ -486,7 +486,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `spCardsGetUpdate` */;
+/*!50003 DROP PROCEDURE IF EXISTS `spCardsUpdate` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -496,7 +496,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCardsGetUpdate`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCardsUpdate`(
 	IN pId INT,
     IN pCardName VARCHAR(50),
     IN pClosingDate DATETIME,
@@ -511,7 +511,7 @@ BEGIN
 	`closingdate` = pClosingDate,
 	`expirationdate` = pExpirationDate,
 	`entityid` = pEntityId,
-	`active` = pActivo
+	`active` = pActive
 	WHERE `id` = pId;
 
 END ;;
@@ -675,6 +675,10 @@ BEGIN
 		`ccp`.`purchasingentity`,
 		`ccp`.`transactioncodeid`,
 		`t`.`associatedentity`,
+        `t`.`transactioncode`,
+        `t`.`purchaseorder`,
+        `t`.`summary`,
+        `t`.`observations`,
 		`ccp`.`details`,
 		`ccp`.`numberinstallments`,
 		`ccp`.`january`,
@@ -693,8 +697,10 @@ BEGIN
 		`ccp`.`verified`,
 		`ccp`.`paid`
 	FROM `creditcardspending` AS ccp
-	INNER JOIN `cards` AS c ON ccp.cardsid = c.id
-	INNER JOIN `transactions` AS t ON ccp.transactioncodeid = t.id;
+	LEFT JOIN `cards` AS c ON ccp.cardsid = c.id
+	LEFT JOIN `transactions` AS t ON ccp.transactioncodeid = t.id
+    WHERE `ccp`.`year` = pYear
+    ORDER BY `ccp`.`id` DESC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -804,6 +810,32 @@ SET
     `year` = pYear,
     `verified` = pVerified,
     `paid` = pPaid
+WHERE
+    `id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtUpdateTransId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreditCardSpendingtUpdateTransId`(
+	pId INT,    
+	pTransactionCodeId INT
+)
+BEGIN
+	UPDATE `creditcardspending` 
+SET 
+    `transactioncodeid` = pTransactionCodeId
 WHERE
     `id` = pId;
 END ;;
@@ -1702,11 +1734,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spTransactionsAdd`(
     IN pAssociatedEntity VARCHAR(45),
     IN pTransactionDate DATETIME,
     IN pSummary VARCHAR(100),
-    IN pObservations VARCHAR(255)
+    IN pObservations VARCHAR(255),
+    IN pCardId INT
 )
 BEGIN
-	INSERT INTO `transactions` (`transactioncode`, `purchaseorder`, `associatedentity`, `transactiondate`, `summary`, `observations`)
-	VALUES (pTransactionCode, pPurchaseOrder, pAssociatedEntity, pTransactionDate, pSummary, pObservations);
+	INSERT INTO `transactions` (`transactioncode`, `purchaseorder`, `associatedentity`, `transactiondate`, `summary`, `observations`, `cardsid`)
+	VALUES (pTransactionCode, pPurchaseOrder, UPPER(pAssociatedEntity), pTransactionDate, UPPER(pSummary), UPPER(pObservations), pCardId);
+    
+    SELECT LAST_INSERT_ID() AS LastInsertedId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1725,14 +1760,28 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spTransactionsGetAll`()
 BEGIN
-	SELECT `id`,
-		`transactioncode`,
-		`purchaseorder`,
-		`associatedentity`,
-		`transactiondate`,
-		`summary`,
-		`observations`
-	FROM `transactions`;
+	SELECT 
+    `t`.`id`,
+    `t`.`transactioncode`,
+    `t`.`purchaseorder`,
+    `t`.`associatedentity`,
+    `t`.`transactiondate`,
+    `t`.`summary`,
+    `t`.`observations`,
+    `t`.`cardsid`,
+    `c`.`cardname`,
+    `c`.`closingdate`,
+    `c`.`expirationdate`,
+    `c`.`active`,
+	`c`.`entityid`,
+    `e`.`entity`,
+    `e`.`entitytype`
+FROM
+    `transactions` AS `t`
+        INNER JOIN
+    `cards` AS `c` ON `t`.`cardsid` = `c`.`id`
+		INNER JOIN `entities` AS `e` ON `c`.`entityid` = `e`.`id`
+        ORDER BY `t`.`id` DESC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1753,15 +1802,28 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spTransactionsGetId`(
 	IN pId INT
 )
 BEGIN
-	SELECT `id`,
-		`transactioncode`,
-		`purchaseorder`,
-		`associatedentity`,
-		`transactiondate`,
-		`summary`,
-		`observations`
-	FROM `transactions`
-    WHERE `id` = pId;
+	SELECT 
+    `t`.`id`,
+    `t`.`transactioncode`,
+    `t`.`purchaseorder`,
+    `t`.`associatedentity`,
+    `t`.`transactiondate`,
+    `t`.`summary`,
+    `t`.`observations`,
+    `t`.`cardsid`,
+    `c`.`cardname`,
+    `c`.`closingdate`,
+    `c`.`expirationdate`,
+    `c`.`active`,
+	`c`.`entityid`,
+    `e`.`entity`,
+    `e`.`entitytype`
+FROM
+    `transactions` AS `t`
+        INNER JOIN
+    `cards` AS `c` ON `t`.`cardsid` = `c`.`id`
+		INNER JOIN `entities` AS `e` ON `c`.`entityid` = `e`.`id`
+    WHERE `t`.`id` = pId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1785,17 +1847,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spTransactionsUpdate`(
     IN pAssociatedEntity VARCHAR(45),
     IN pTransactionDate DATETIME,
     IN pSummary VARCHAR(100),
-    IN pObservations VARCHAR(255)
+    IN pObservations VARCHAR(255),
+    IN pCardId INT
 )
 BEGIN
     UPDATE `transactions`
 	SET
 		`transactioncode` = pTransactionCode, 
 		`purchaseorder` = pPurchaseOrder,
-		`associatedentity` = pAssociatedEntity,
+		`associatedentity` = UPPER(pAssociatedEntity),
 		`transactiondate` = pTransactionDate,
-		`summary` = pSummary,
-		`observations` = pObservations
+		`summary` = UPPER(pSummary),
+		`observations` = UPPER(pObservations),
+        `cardsid` = pCardId
 	WHERE `id` = pId;
 END ;;
 DELIMITER ;
@@ -1908,4 +1972,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-08 20:07:29
+-- Dump completed on 2025-12-17  0:37:20

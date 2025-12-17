@@ -27,18 +27,8 @@ CREATE TABLE `entities` (
   `entity` varchar(100) DEFAULT NULL,
   `entitytype` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `entities`
---
-
-LOCK TABLES `entities` WRITE;
-/*!40000 ALTER TABLE `entities` DISABLE KEYS */;
-INSERT INTO `entities` VALUES (1,'SANTANDER RIO','RIO'),(2,'NARANJA X','NX'),(3,'MERCADO PAGO/CREDITO','MP'),(4,'UALA','UA'),(5,'SATOSHITANGO','ST'),(6,'IOL','IOL'),(7,'PERSONAL PLAY','PPY'),(8,'DEMO2','DM2');
-/*!40000 ALTER TABLE `entities` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -49,4 +39,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-08 20:07:29
+-- Dump completed on 2025-12-17  0:37:19
