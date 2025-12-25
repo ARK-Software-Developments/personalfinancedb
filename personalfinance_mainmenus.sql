@@ -32,6 +32,16 @@ CREATE TABLE `mainmenus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mainmenus`
+--
+
+LOCK TABLES `mainmenus` WRITE;
+/*!40000 ALTER TABLE `mainmenus` DISABLE KEYS */;
+INSERT INTO `mainmenus` VALUES (1,'Inicio','Inicio','/',1,0),(2,'Ingresos','Ingresos','/incomes',1,0),(3,'Egresos','Egresos','/bills',1,0),(4,'Haberes','Entidades Mensuales','/income',2,2),(5,'Inversiones','Inversiones','/investments',2,2),(6,'Pedidos','Pedidos','/orders',2,3),(7,'Servicios','Servicios','/services',2,3),(8,'Compras Tarjetas','Compras de Tarjetas','/creditcardspending',2,3);
+/*!40000 ALTER TABLE `mainmenus` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -42,4 +52,4 @@ CREATE TABLE `mainmenus` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-17  0:37:19
+-- Dump completed on 2025-12-25 20:30:39
