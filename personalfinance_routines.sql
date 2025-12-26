@@ -1284,13 +1284,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsAdd`(
 BEGIN
 	INSERT INTO `orderdetails` (`ordersid`, `brand`, `productdetails`, `description`, `productcode`, `quantity`, `unitprice`, `subtotal`, `to`, `statusid`)
 	VALUES (pOrderId, pBrand, pProductDetails, pDescription, pProductCode, pQuantity, pUnitPrice, pSubTotal, pTo, pStatus);
-    
-    UPDATE `orders`
-	SET
-	`totalamount` = (SELECT SUM(`subtotal`)
-		FROM `orderdetails`
-		WHERE `ordersid` = pOrderId )
-	WHERE `id` = pOrderId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1417,6 +1410,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsUpdate`(
 	IN pId INT,
+    IN pOrderId INT,
     IN pBrand VARCHAR(45),
     IN pProductDetails VARCHAR(200),
     IN pDescription VARCHAR(200),
@@ -1430,6 +1424,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsUpdate`(
 BEGIN
 	UPDATE `orderdetails`
 	SET
+    `ordersid` = pOrderId,
 	`brand` = pBrand,
 	`productdetails` = pProductDetails,
 	`description` = pDescription,
@@ -1558,6 +1553,32 @@ BEGIN
 	`totalamount` = pMontoTotal,
 	`statusid` = pEstado
 	WHERE `id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spOrdersUpdateTotalAmount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersUpdateTotalAmount`(
+	IN pOrderId INT
+)
+BEGIN
+	UPDATE `orders`
+	SET
+	`totalamount` = (SELECT SUM(`subtotal`)
+		FROM `orderdetails`
+		WHERE `ordersid` = pOrderId )
+	WHERE `id` = pOrderId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1985,4 +2006,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-25 20:30:39
+-- Dump completed on 2025-12-26 14:59:02
