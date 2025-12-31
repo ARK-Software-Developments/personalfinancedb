@@ -398,6 +398,44 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsUpdateByPayment` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsUpdateByPayment`(
+	IN pTypeOfExpenseId INT,
+    IN pAmount DECIMAL(10,2),
+    IN pMonth INT,
+	IN pYear INT
+)
+BEGIN
+	UPDATE bills
+	SET `january`   = CASE WHEN pMonth = 1 THEN `january` + pAmount ELSE `january` END,
+		`february`  = CASE WHEN pMonth = 2 THEN `february` + pAmount ELSE `february` END,
+		`march`     = CASE WHEN pMonth = 3 THEN `march` + pAmount ELSE `march` END,
+		`april`     = CASE WHEN pMonth = 4 THEN `april` + pAmount ELSE `april` END,
+		`may`       = CASE WHEN pMonth = 5 THEN `may` + pAmount ELSE `may` END,
+		`june`      = CASE WHEN pMonth = 6 THEN `june` + pAmount ELSE `june` END,
+		`july`      = CASE WHEN pMonth = 7 THEN `july` + pAmount ELSE `july` END,
+		`august`    = CASE WHEN pMonth = 8 THEN `august` + pAmount ELSE `august` END,
+		`september` = CASE WHEN pMonth = 9 THEN `september` + pAmount ELSE `september` END,
+		`october`  = CASE WHEN pMonth = 10 THEN `october` + pAmount ELSE `october` END,
+		`november`  = CASE WHEN pMonth = 11 THEN `november` + pAmount ELSE `november` END,
+		`december`  = CASE WHEN pMonth = 12 THEN `december` + pAmount ELSE `december` END,
+        `paid` = 1
+	WHERE `year` = pYear AND `typeofexpenseid` = pTypeOfExpenseId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spCardsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -742,7 +780,13 @@ BEGIN
 		`ccp`.`december`,
 		`ccp`.`year`,
 		`ccp`.`verified`,
-		`ccp`.`paid`
+		`ccp`.`paid`,
+        (SELECT 
+            COUNT(*)
+        FROM
+            `transactions` AS `t`
+        WHERE
+            `t`.`creditcardspendingid` = `ccp`.`id`) AS `transaccionesasociada`
 	FROM `creditcardspending` AS ccp
 	LEFT JOIN `cards` AS c ON ccp.cardsid = c.id
     WHERE `ccp`.`id` = pId;
@@ -1284,13 +1328,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsAdd`(
 BEGIN
 	INSERT INTO `orderdetails` (`ordersid`, `brand`, `productdetails`, `description`, `productcode`, `quantity`, `unitprice`, `subtotal`, `to`, `statusid`)
 	VALUES (pOrderId, pBrand, pProductDetails, pDescription, pProductCode, pQuantity, pUnitPrice, pSubTotal, pTo, pStatus);
-    
-    UPDATE `orders`
-	SET
-	`totalamount` = (SELECT SUM(`subtotal`)
-		FROM `orderdetails`
-		WHERE `ordersid` = pOrderId )
-	WHERE `id` = pOrderId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1417,6 +1454,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsUpdate`(
 	IN pId INT,
+    IN pOrderId INT,
     IN pBrand VARCHAR(45),
     IN pProductDetails VARCHAR(200),
     IN pDescription VARCHAR(200),
@@ -1430,6 +1468,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrderDetailsUpdate`(
 BEGIN
 	UPDATE `orderdetails`
 	SET
+    `ordersid` = pOrderId,
 	`brand` = pBrand,
 	`productdetails` = pProductDetails,
 	`description` = pDescription,
@@ -1488,6 +1527,7 @@ BEGIN
     `o`.`number`,
     `o`.`orderdate`,
     `o`.`datereceived`,
+    `o`.`paymentdate`,
     `o`.`totalamount`,
     `o`.`resourcetype`,
     `o`.`statusid`,
@@ -1520,6 +1560,7 @@ BEGIN
     `o`.`number`,
     `o`.`orderdate`,
     `o`.`datereceived`,
+    `o`.`paymentdate`,
     `o`.`totalamount`,
     `o`.`resourcetype`,
     `o`.`statusid`,
@@ -1548,6 +1589,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersUpdate`(
 	IN pId INT,
     IN pFechaRecibido DATETIME,
+    IN pFechaPagado DATETIME,
     IN pMontoTotal DECIMAL(10,2),
     IN pEstado INT
 )
@@ -1555,9 +1597,119 @@ BEGIN
 	UPDATE `orders`
 	SET
 	`datereceived` = pFechaRecibido,
+    `paymentdate` = pFechaPagado,
 	`totalamount` = pMontoTotal,
 	`statusid` = pEstado
 	WHERE `id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spOrdersUpdateTotalAmount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spOrdersUpdateTotalAmount`(
+	IN pOrderId INT
+)
+BEGIN
+	UPDATE `orders`
+	SET
+	`totalamount` = (SELECT SUM(`subtotal`)
+		FROM `orderdetails`
+		WHERE `ordersid` = pOrderId )
+	WHERE `id` = pOrderId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spPaymentsAdd` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spPaymentsAdd`(
+	IN pRegistrationDate DATETIME,
+	IN pDateOfPayment DATETIME,
+	IN pRegistrationCode VARCHAR(45),
+	IN pPaymentResourceId INT,
+	IN pPaymentType VARCHAR(45),
+	IN pBudgetedAmount DECIMAL(10,2),
+	IN pAmountPaid DECIMAL(10,2),
+	IN pReasonForPayment INT
+)
+BEGIN	
+	INSERT INTO `payments` (
+		`registrationdate`,
+		`dateofpayment`,
+		`registrationcode`,
+		`paymentresourceid`,
+		`paymenttype`,
+		`budgetedamount`,
+		`amountpaid`,
+		`reasonforpayment`
+	)
+	VALUES (
+		pRegistrationDate,
+		pDateOfPayment,
+		pRegistrationCode,
+		pPaymentResourceId,
+		pPaymentType,
+		pBudgetedAmount,
+		pAmountPaid,
+		pReasonForPayment
+	);
+    
+    SELECT LAST_INSERT_ID() AS LastInsertedId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spPaymentsGetAll` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spPaymentsGetAll`()
+BEGIN
+	SELECT `p`.`id`,
+		`p`.`registrationdate`,
+		`p`.`dateofpayment`,
+		`p`.`registrationcode`,
+		`p`.`paymentresourceid`,
+		`e`.`entity`,
+        `e`.`entitytype`,
+		`p`.`paymenttype`,
+		`p`.`budgetedamount`,
+		`p`.`amountpaid`,
+		`p`.`reasonforpayment`,
+		`t`.`type`
+	FROM `payments` AS `p`
+	INNER JOIN `entities` AS `e` ON `p`.`paymentresourceid` = `e`.`id`
+	INNER JOIN `typeofexpense` AS `t` ON `p`.`reasonforpayment` = `t`.`id`
+	ORDER BY `p`.`id` DESC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1985,4 +2137,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-25 20:30:39
+-- Dump completed on 2025-12-30 23:41:42

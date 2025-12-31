@@ -16,35 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `orders`
+-- Table structure for table `payments`
 --
 
-DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `payments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `orders` (
+CREATE TABLE `payments` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `number` int DEFAULT NULL,
-  `orderdate` datetime DEFAULT NULL,
-  `paymentdate` datetime DEFAULT NULL,
-  `datereceived` datetime DEFAULT NULL,
-  `totalamount` decimal(10,2) DEFAULT NULL,
-  `resourcetype` varchar(45) DEFAULT NULL,
-  `statusid` int DEFAULT NULL,
+  `registrationdate` datetime DEFAULT NULL,
+  `dateofpayment` datetime DEFAULT NULL,
+  `registrationcode` varchar(45) DEFAULT NULL,
+  `paymentresourceid` int DEFAULT NULL COMMENT 'entitiesid',
+  `paymenttype` varchar(45) DEFAULT NULL,
+  `budgetedamount` decimal(10,2) DEFAULT NULL,
+  `amountpaid` decimal(10,2) DEFAULT NULL,
+  `reasonforpayment` int DEFAULT NULL COMMENT 'typeofexpenseid',
   PRIMARY KEY (`id`),
-  KEY `fx_statusid_status_idx` (`statusid`),
-  CONSTRAINT `fx_statusid_status` FOREIGN KEY (`statusid`) REFERENCES `status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fx_entities_entitiesid_idx` (`paymentresourceid`),
+  KEY `fx_typeofexpense_typeofexpenseid_idx` (`reasonforpayment`),
+  CONSTRAINT `fx_entities_entitiesid` FOREIGN KEY (`paymentresourceid`) REFERENCES `entities` (`id`),
+  CONSTRAINT `fx_typeofexpense_typeofexpenseid` FOREIGN KEY (`reasonforpayment`) REFERENCES `typeofexpense` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `payments`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (11,64536,'2025-09-10 00:00:00',NULL,'2025-09-30 00:00:00',45800.00,'AVON',4),(12,91208,'2025-07-22 00:00:00',NULL,'2025-07-31 00:00:00',38900.00,'AVON',4),(13,43449,'2025-08-13 00:00:00',NULL,'2025-08-31 00:00:00',19400.00,'AVON',4),(14,34948,'2025-10-22 00:00:00',NULL,'2025-10-31 00:00:00',53700.00,'AVON',4),(15,45258,'2025-03-13 00:00:00',NULL,'2025-03-31 00:00:00',55323.00,'AVON',4),(16,20114,'2025-11-17 00:00:00',NULL,'2025-12-22 00:00:00',37580.00,'AVON',4),(17,88269,'2025-12-05 00:00:00',NULL,NULL,49500.00,'AVON',3),(18,54877,'2025-12-22 00:00:00',NULL,NULL,53000.00,'ROPA-ROXANA',2);
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+LOCK TABLES `payments` WRITE;
+/*!40000 ALTER TABLE `payments` DISABLE KEYS */;
+INSERT INTO `payments` VALUES (19,'2025-12-23 00:00:00','2025-12-23 00:00:00','456789',1,'ROXANA',49500.00,49500.00,34);
+/*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
