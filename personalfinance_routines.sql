@@ -184,6 +184,42 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBalanceUpdateProcess` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBalanceUpdateProcess`(
+	IN ptipoGasto INT,
+    IN pYear INT,
+    IN pMonth VARCHAR(45),
+    IN pTotal DECIMAL(10,2)
+)
+BEGIN
+	-- Construcción del SQL dinámico
+	SET @sql = CONCAT(
+    'UPDATE `bills` SET `',
+    pMonth, '` = ', pTotal, ', ',
+    '`paid` = 1',
+    ' WHERE `active` = 1 AND `year` = ', pYear,
+    ' AND `typeofexpenseid` = ', ptipoGasto
+);
+
+	-- Preparar y ejecutar
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spBillsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -371,7 +407,7 @@ BEGIN
 	UPDATE `bills`
 	SET
 	`typeofexpenseid` = pTypeofexpenseid,
-	`summary` = pSummary,
+	`summary` = UPPER(pSummary),
 	`january` = pJanuary,
 	`february` = pFebruary,
 	`march` = pMarch,
@@ -389,7 +425,7 @@ BEGIN
 	`reserved` = pReserved,
 	`paid` = pPaid,
 	`year` = pYear,
-	`observations` = pObservations,
+	`observations` = UPPER(pObservations),
 	`active` = pActive
 	WHERE `id` = pId;
 END ;;
@@ -1633,7 +1669,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-<<<<<<< HEAD
 /*!50003 DROP PROCEDURE IF EXISTS `spPaymentsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1717,8 +1752,36 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-=======
->>>>>>> e9a335402608cf009a98c9316b14304159c3fa62
+/*!50003 DROP PROCEDURE IF EXISTS `spPaymentsGetAllResume` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spPaymentsGetAllResume`(
+	IN pYear INT
+)
+BEGIN
+	SELECT 
+		`reasonforpayment` AS tipogasto,
+		MONTH(`dateofpayment`) AS mes,
+		LOWER(MONTHNAME(`dateofpayment`)) AS mesnombre,
+		SUM(`amountpaid`) AS total
+	FROM
+		`payments`
+	WHERE
+		YEAR(`dateofpayment`) = pYear
+	GROUP BY `reasonforpayment` , MONTH(`dateofpayment`) , LOWER(MONTHNAME(`dateofpayment`));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spServicesAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2140,8 +2203,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< HEAD
--- Dump completed on 2025-12-30 23:41:42
-=======
--- Dump completed on 2025-12-26 14:59:02
->>>>>>> e9a335402608cf009a98c9316b14304159c3fa62
+-- Dump completed on 2026-01-06 19:28:39

@@ -37,7 +37,7 @@ CREATE TABLE `payments` (
   KEY `fx_typeofexpense_typeofexpenseid_idx` (`reasonforpayment`),
   CONSTRAINT `fx_entities_entitiesid` FOREIGN KEY (`paymentresourceid`) REFERENCES `entities` (`id`),
   CONSTRAINT `fx_typeofexpense_typeofexpenseid` FOREIGN KEY (`reasonforpayment`) REFERENCES `typeofexpense` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (19,'2025-12-23 00:00:00','2025-12-23 00:00:00','456789',1,'ROXANA',49500.00,49500.00,34);
+INSERT INTO `payments` VALUES (19,'2025-12-23 00:00:00','2025-12-23 00:00:00','456789',1,'ROXANA',49500.00,49500.00,34),(20,'2025-12-31 00:00:00','2025-12-10 00:00:00','9841929007',1,'ALQUILER DICIEMBRE',550000.00,550000.00,2);
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-30 23:41:41
+-- Dump completed on 2026-01-06 19:28:39
