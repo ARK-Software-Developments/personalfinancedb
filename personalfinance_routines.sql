@@ -161,7 +161,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spBalanceUpdate`(
     IN pYear INT
 )
 BEGIN
-    UPDATE `personalfinance`.`balance`
+    UPDATE `balance`
 		SET
 		`concept` = pConcepto,
 		`january` = pJanuary,
@@ -2203,4 +2203,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-06 19:28:39
+-- Dump completed on 2026-01-08  0:29:56
