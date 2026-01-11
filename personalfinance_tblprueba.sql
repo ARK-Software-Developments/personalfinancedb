@@ -16,33 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cards`
+-- Table structure for table `tblprueba`
 --
 
-DROP TABLE IF EXISTS `cards`;
+DROP TABLE IF EXISTS `tblprueba`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cards` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `cardname` varchar(50) DEFAULT NULL,
-  `closingdate` datetime DEFAULT NULL,
-  `expirationdate` datetime DEFAULT NULL,
-  `entityid` int DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_entities_entityid_idx` (`entityid`),
-  CONSTRAINT `fk_entities_entityid` FOREIGN KEY (`entityid`) REFERENCES `entities` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tblprueba` (
+  `idtblPrueba` int NOT NULL AUTO_INCREMENT,
+  `tblPruebacol` datetime DEFAULT NULL,
+  `tblPruebacol1` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idtblPrueba`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cards`
+-- Dumping data for table `tblprueba`
 --
 
-LOCK TABLES `cards` WRITE;
-/*!40000 ALTER TABLE `cards` DISABLE KEYS */;
-INSERT INTO `cards` VALUES (1,'VISA RIO','2026-01-02 00:00:00','2025-12-10 00:00:00',1,1),(2,'AMERICAN EXPRESS RIO','2026-01-02 00:00:00','2025-12-13 00:00:00',1,1),(3,'VISA NX','2026-01-27 00:00:00','2025-12-10 00:00:00',2,1),(4,'MASTER CARD NX','2026-01-27 00:00:00','2025-12-10 00:00:00',2,1),(5,'VISA VIRTUAL NX','2026-01-27 00:00:00','2025-12-10 00:00:00',2,1),(6,'MASTER CARD MC','2026-01-27 00:00:00','2025-12-10 00:00:00',3,1);
-/*!40000 ALTER TABLE `cards` ENABLE KEYS */;
+LOCK TABLES `tblprueba` WRITE;
+/*!40000 ALTER TABLE `tblprueba` DISABLE KEYS */;
+INSERT INTO `tblprueba` VALUES (2,'2026-01-09 14:17:53','inicio'),(3,'2026-01-09 14:25:00','inicio 2');
+/*!40000 ALTER TABLE `tblprueba` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-11  0:24:41
+-- Dump completed on 2026-01-11  0:24:40
