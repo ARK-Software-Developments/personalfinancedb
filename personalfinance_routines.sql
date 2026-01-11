@@ -243,6 +243,55 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBalanceUpdateProcessPayments` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBalanceUpdateProcessPayments`(
+	IN pYear INT,
+    IN pMonth INT
+)
+BEGIN
+	DECLARE v_amountpaid DECIMAL(10,2);
+    
+	SELECT 
+        IFNULL(SUM(`amountpaid`), 0)
+    INTO 
+        v_amountpaid
+	FROM
+		`payments`
+	WHERE
+		YEAR(`dateofpayment`) = pYear
+			AND MONTH(`dateofpayment`) = pMonth;
+            
+	SET SQL_SAFE_UPDATES = 0;
+    UPDATE `balance`
+	SET `january`   = CASE WHEN pMonth = 1 THEN v_amountpaid ELSE `january` END,
+			`february`  = CASE WHEN pMonth = 2 THEN v_amountpaid ELSE `february` END,
+			`march`     = CASE WHEN pMonth = 3 THEN v_amountpaid ELSE `march` END,
+			`april`     = CASE WHEN pMonth = 4 THEN v_amountpaid ELSE `april` END,
+			`may`       = CASE WHEN pMonth = 5 THEN v_amountpaid ELSE `may` END,
+			`june`      = CASE WHEN pMonth = 6 THEN v_amountpaid ELSE `june` END,
+			`july`      = CASE WHEN pMonth = 7 THEN v_amountpaid ELSE `july` END,
+			`august`    = CASE WHEN pMonth = 8 THEN v_amountpaid ELSE `august` END,
+			`september` = CASE WHEN pMonth = 9 THEN v_amountpaid ELSE `september` END,
+			`october`  = CASE WHEN pMonth = 10 THEN v_amountpaid ELSE `october` END,
+			`november`  = CASE WHEN pMonth = 11 THEN v_amountpaid ELSE `november` END,
+			`december`  = CASE WHEN pMonth = 12 THEN v_amountpaid ELSE `december` END
+	WHERE `year` = pYear AND `concept` = 'EGRESO';
+    SET SQL_SAFE_UPDATES = 1;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spBillsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2377,4 +2426,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-11  0:24:41
+-- Dump completed on 2026-01-11 17:59:21
