@@ -32,6 +32,7 @@ CREATE TABLE `notification` (
   `app` varchar(45) DEFAULT NULL,
   `level` varchar(45) DEFAULT NULL,
   `img` varchar(45) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -42,7 +43,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,'2026-01-10 23:54:04','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta VISA RIO vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png'),(2,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta AMERICAN EXPRESS RIO vence el 13/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png'),(3,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta VISA NX vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png'),(4,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta MASTER CARD NX vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png'),(5,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta VISA VIRTUAL NX vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png');
+INSERT INTO `notification` VALUES (1,'2026-01-10 23:54:04','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta VISA RIO vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png',0),(2,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta AMERICAN EXPRESS RIO vence el 13/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png',0),(3,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta VISA NX vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png',0),(4,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta MASTER CARD NX vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png',0),(5,'2026-01-11 00:11:39','Vencimiento Resumen TC','Notificación','El resumen de la Tarjeta VISA VIRTUAL NX vence el 10/01/2026. Se vencerá pronto!!!','andres.kamycki@gmail.com','alert/email','Warning!','medium_priority-48.png',0);
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-11 17:59:20
+-- Dump completed on 2026-01-13 22:28:23

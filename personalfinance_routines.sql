@@ -292,6 +292,84 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBalanceUpdateProcessPostCreditCard` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBalanceUpdateProcessPostCreditCard`(
+	IN pId INT,
+	IN pMonth INT,
+    IN pAmount DECIMAL(10,2)
+)
+BEGIN
+	SET SQL_SAFE_UPDATES = 0;
+    
+	UPDATE `bills` 
+	SET 
+		`january` = CASE
+			WHEN pMonth = 1 THEN pAmount
+			ELSE `january`
+		END,
+		`february` = CASE
+			WHEN pMonth = 2 THEN pAmount
+			ELSE `february`
+		END,
+		`march` = CASE
+			WHEN pMonth = 3 THEN pAmount
+			ELSE `march`
+		END,
+		`april` = CASE
+			WHEN pMonth = 4 THEN pAmount
+			ELSE `april`
+		END,
+		`may` = CASE
+			WHEN pMonth = 5 THEN pAmount
+			ELSE `may`
+		END,
+		`june` = CASE
+			WHEN pMonth = 6 THEN pAmount
+			ELSE `june`
+		END,
+		`july` = CASE
+			WHEN pMonth = 7 THEN pAmount
+			ELSE `july`
+		END,
+		`august` = CASE
+			WHEN pMonth = 8 THEN pAmount
+			ELSE `august`
+		END,
+		`september` = CASE
+			WHEN pMonth = 9 THEN + pAmount
+			ELSE `september`
+		END,
+		`october` = CASE
+			WHEN pMonth = 10 THEN pAmount
+			ELSE `october`
+		END,
+		`november` = CASE
+			WHEN pMonth = 11 THEN + pAmount
+			ELSE `november`
+		END,
+		`december` = CASE
+			WHEN pMonth = 12 THEN + pAmount
+			ELSE `december`
+		END
+	WHERE
+		`id` = pId;
+	
+    SET SQL_SAFE_UPDATES = 1;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spBillsAdd` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -329,7 +407,7 @@ BEGIN
 	INSERT INTO `bills` 
 		(`typeofexpenseid`, `summary`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `wallet`, `verified`, `reserved`, `paid`, `year`, `observations`, `active`)
 	VALUES
-		(pTypeofexpenseid, pSummary, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, pObservations, pActive);
+		(pTypeofexpenseid, pSummary, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, UCASE(pObservations), pActive);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -435,6 +513,51 @@ BEGIN
     INNER JOIN `categories` AS c ON  `toe`.`categoriesid` =  `c`.`id`
     INNER JOIN `entities` AS e ON  `b`.`wallet` =  `e`.`id`
     WHERE `b`.`id` = pId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsGetProcess` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsGetProcess`(
+	IN pYear INT,
+    IN pCardId INT
+)
+BEGIN
+	SELECT 
+		`b`.`id`,
+		`b`.`january`,
+		`b`.`february`,
+		`b`.`march`,
+		`b`.`april`,
+		`b`.`may`,
+		`b`.`june`,
+		`b`.`july`,
+		`b`.`august`,
+		`b`.`september`,
+		`b`.`october`,
+		`b`.`november`,
+		`b`.`december`,
+		`c`.`cardname`
+	FROM
+		`bills` AS b
+			INNER JOIN
+		`typeofexpense` AS `t` ON `b`.`typeofexpenseid` = `t`.`id`
+			INNER JOIN
+		`cards` `c` ON `t`.`referentid` = `c`.`id`
+	WHERE
+		`b`.`active` = 1 AND `b`.`year` = pYear
+			AND `c`.`id` = pCardId;	
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -793,7 +916,7 @@ BEGIN
 	INSERT INTO `creditcardspending`
 		(`cardsid`, `purchasingentity`, `details`, `numberinstallments`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `year`, `verified`, `paid`)
 	VALUES
-		(pCardsId, pPurchasingEntity, pDetails, pNumberInstallments, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pYear, pVerified, pPaid);
+		(pCardsId, UCASE(pPurchasingEntity), UCASE(pDetails), pNumberInstallments, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pYear, pVerified, pPaid);
         
         SELECT LAST_INSERT_ID() AS LastInsertedId;
         
@@ -904,6 +1027,49 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtGetResumen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreditCardSpendingtGetResumen`(
+	IN pYear INT
+)
+BEGIN
+	SELECT 
+		`c`.`id`,
+		`c`.`cardname`,
+		SUM(`ccp`.`january`) AS january,
+		SUM(`ccp`.`february`) AS february,
+		SUM(`ccp`.`march`) AS march,
+		SUM(`ccp`.`april`) AS april,
+		SUM(`ccp`.`may`) AS may,
+		SUM(`ccp`.`june`) AS june,
+		SUM(`ccp`.`july`) AS july,
+		SUM(`ccp`.`august`) AS august,
+		SUM(`ccp`.`september`) AS september,
+		SUM(`ccp`.`october`) AS october,
+		SUM(`ccp`.`november`) AS november,
+		SUM(`ccp`.`december`) AS december
+	FROM
+		`creditcardspending` AS ccp
+			LEFT JOIN
+		`cards` AS c ON ccp.cardsid = c.id
+	WHERE
+		`ccp`.`year` = pYear
+	GROUP BY `c`.`id`, `c`.`cardname`
+    ORDER BY `c`.`id` ASC;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spCreditCardSpendingtGetResumenByCard` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -982,8 +1148,8 @@ BEGIN
 	UPDATE `creditcardspending` 
 SET 
     `cardsid` = pCardsId,
-    `purchasingentity` = pPurchasingEntity,
-    `details` = pDetails,
+    `purchasingentity` = UCASE(pPurchasingEntity),
+    `details` = UCASE(pDetails),
     `numberinstallments` = pNumberInstallments,
     `january` = pJanuary,
     `february` = pFebruary,
@@ -1555,7 +1721,8 @@ BEGIN
     `app`,
     `level`,
     `img`
-	FROM `notification`;
+	FROM `notification`
+    WHERE `active` = 1;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2426,4 +2593,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-11 17:59:21
+-- Dump completed on 2026-01-13 22:28:24
