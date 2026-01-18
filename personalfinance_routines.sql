@@ -243,6 +243,103 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBalanceUpdateProcessBills` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBalanceUpdateProcessBills`(
+	IN pYear INT,
+    IN pMonth INT
+)
+BEGIN	
+	DECLARE pAmount DECIMAL(10,2);    
+    SET SQL_SAFE_UPDATES = 0;
+    
+	SELECT  
+			CASE
+				WHEN pMonth = 1 THEN SUM(`january`)
+				WHEN pMonth = 2 THEN SUM(`february`)
+				WHEN pMonth = 3 THEN SUM(`march`)
+				WHEN pMonth = 4 THEN SUM(`april`)
+				WHEN pMonth = 5 THEN SUM(`may`)
+				WHEN pMonth = 6 THEN SUM(`june`)
+				WHEN pMonth = 7 THEN SUM(`july`)
+				WHEN pMonth = 8 THEN SUM(`august`)
+				WHEN pMonth = 9 THEN SUM(`september`)
+				WHEN pMonth = 10 THEN SUM(`october`)
+				WHEN pMonth = 11 THEN SUM(`november`)
+				WHEN pMonth = 12 THEN SUM(`december`)
+			END     
+	INTO pAmount
+    FROM `bills`
+	WHERE `year` = pYear;
+
+	UPDATE `balance` 
+	SET 
+		`january` = CASE
+			WHEN pMonth = 1 THEN pAmount
+			ELSE `january`
+		END,
+		`february` = CASE
+			WHEN pMonth = 2 THEN pAmount
+			ELSE `february`
+		END,
+		`march` = CASE
+			WHEN pMonth = 3 THEN pAmount
+			ELSE `march`
+		END,
+		`april` = CASE
+			WHEN pMonth = 4 THEN pAmount
+			ELSE `april`
+		END,
+		`may` = CASE
+			WHEN pMonth = 5 THEN pAmount
+			ELSE `may`
+		END,
+		`june` = CASE
+			WHEN pMonth = 6 THEN pAmount
+			ELSE `june`
+		END,
+		`july` = CASE
+			WHEN pMonth = 7 THEN pAmount
+			ELSE `july`
+		END,
+		`august` = CASE
+			WHEN pMonth = 8 THEN pAmount
+			ELSE `august`
+		END,
+		`september` = CASE
+			WHEN pMonth = 9 THEN pAmount
+			ELSE `september`
+		END,
+		`october` = CASE
+			WHEN pMonth = 10 THEN pAmount
+			ELSE `october`
+		END,
+		`november` = CASE
+			WHEN pMonth = 11 THEN pAmount
+			ELSE `november`
+		END,
+		`december` = CASE
+			WHEN pMonth = 12 THEN pAmount
+			ELSE `december`
+		END
+	WHERE
+		`year` = pYear
+			AND `concept` = 'PRESUPUESTO';
+	SET SQL_SAFE_UPDATES = 1;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `spBalanceUpdateProcessPayments` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -407,7 +504,88 @@ BEGIN
 	INSERT INTO `bills` 
 		(`typeofexpenseid`, `summary`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `wallet`, `verified`, `reserved`, `paid`, `year`, `observations`, `active`)
 	VALUES
-		(pTypeofexpenseid, pSummary, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, UCASE(pObservations), pActive);
+		(pTypeofexpenseid, UPPER(pSummary), pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, UPPER(pObservations), pActive);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spBillsCopyMonth` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spBillsCopyMonth`(
+	IN pYearFrom INT,
+    IN pYearTo INT,
+    IN pMonthFrom INT,
+    IN pMonthTo INT
+)
+BEGIN
+	DECLARE done INT DEFAULT 0;
+    DECLARE v_id INT;
+    DECLARE v_selected_month DECIMAL(10,2);
+    
+    DECLARE cur CURSOR FOR
+        SELECT `id`, 
+        CASE
+			WHEN pMonthFrom = 1 THEN `january`
+			WHEN pMonthFrom = 2 THEN `february`
+			WHEN pMonthFrom = 3 THEN `march`
+            WHEN pMonthFrom = 4 THEN `april`
+            WHEN pMonthFrom = 5 THEN `may`
+            WHEN pMonthFrom = 6 THEN `june`
+            WHEN pMonthFrom = 7 THEN `july`
+            WHEN pMonthFrom = 8 THEN `august`
+            WHEN pMonthFrom = 9 THEN `september`
+            WHEN pMonthFrom = 10 THEN `october`
+            WHEN pMonthFrom = 11 THEN `november`
+            WHEN pMonthFrom = 12 THEN `december`
+		END AS selected_month
+        FROM `bills`
+        WHERE `year` = pYearFrom;
+        
+        -- Handler para fin del cursor
+		DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+		-- Abrir el cursor
+		OPEN cur;
+
+		read_loop: LOOP
+			FETCH cur INTO v_id, v_selected_month;
+			IF done THEN
+				LEAVE read_loop;
+			END IF;
+
+			-- Aquí puedes hacer lo que necesites con los valores
+			-- Actualizar el año destino
+			UPDATE `bills`
+			SET 
+				`january`   = CASE WHEN pMonthTo = 1  THEN v_selected_month ELSE `january` END,
+				`february`  = CASE WHEN pMonthTo = 2  THEN v_selected_month ELSE `february` END,
+				`march`     = CASE WHEN pMonthTo = 3  THEN v_selected_month ELSE `march` END,
+				`april`     = CASE WHEN pMonthTo = 4  THEN v_selected_month ELSE `april` END,
+				`may`       = CASE WHEN pMonthTo = 5  THEN v_selected_month ELSE `may` END,
+				`june`      = CASE WHEN pMonthTo = 6  THEN v_selected_month ELSE `june` END,
+				`july`      = CASE WHEN pMonthTo = 7  THEN v_selected_month ELSE `july` END,
+				`august`    = CASE WHEN pMonthTo = 8  THEN v_selected_month ELSE `august` END,
+				`september` = CASE WHEN pMonthTo = 9  THEN v_selected_month ELSE `september` END,
+				`october`   = CASE WHEN pMonthTo = 10 THEN v_selected_month ELSE `october` END,
+				`november`  = CASE WHEN pMonthTo = 11 THEN v_selected_month ELSE `november` END,
+				`december`  = CASE WHEN pMonthTo = 12 THEN v_selected_month ELSE `december` END
+			WHERE `year` = pYearTo 
+			  AND `id` = v_id;
+
+		END LOOP;
+
+		-- Cerrar el cursor
+		CLOSE cur;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1334,7 +1512,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `spIncomeCopyBudget` */;
+/*!50003 DROP PROCEDURE IF EXISTS `spIncomeCopyMonth` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1344,8 +1522,8 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIncomeCopyBudget`(
-	IN pYearFrom INT,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIncomeCopyMonth`(
+IN pYearFrom INT,
     IN pYearTo INT,
     IN pMonthFrom INT,
     IN pMonthTo INT
@@ -2617,4 +2795,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-15 23:30:32
+-- Dump completed on 2026-01-18  0:23:10
