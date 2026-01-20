@@ -1,7 +1,0 @@
-CREATE EVENT job_cards_closingdate_update
-ON SCHEDULE EVERY 1 MONTH
-STARTS LAST_DAY(CURRENT_DATE) + INTERVAL 23 HOUR + INTERVAL 59 MINUTE
-DO
-  UPDATE `cards`
-  SET `closingdate` = DATE_ADD(`closingdate`, INTERVAL 1 MONTH)
-  WHERE `id` > 0;
