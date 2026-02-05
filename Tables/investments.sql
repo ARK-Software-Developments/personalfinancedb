@@ -16,19 +16,25 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `duedatesschedule`
+-- Table structure for table `investments`
 --
 
-DROP TABLE IF EXISTS `duedatesschedule`;
+DROP TABLE IF EXISTS `investments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `duedatesschedule` (
+CREATE TABLE `investments` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `scheduledateexpiration` datetime DEFAULT NULL,
-  `typeofexpenseid` int DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `entityid` int NOT NULL,
+  `investmentdate` datetime NOT NULL,
+  `investmentamount` decimal(10,2) NOT NULL,
+  `investmentprofit` decimal(10,2) NOT NULL,
+  `updatedate` datetime DEFAULT NULL,
+  `investmenttypeid` int NOT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `investments_instrumenttype_FK` (`investmenttypeid`),
+  CONSTRAINT `investments_instrumenttype_FK` FOREIGN KEY (`investmenttypeid`) REFERENCES `investmenttype` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

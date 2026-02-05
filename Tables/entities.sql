@@ -1,23 +1,42 @@
-/* Structure for the `entities` table : */
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: personalfinance
+-- ------------------------------------------------------
+-- Server version	8.0.42
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `entities`
+--
+
+DROP TABLE IF EXISTS `entities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `entities` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `entity` VARCHAR(100) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `entitytype` VARCHAR(45) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  PRIMARY KEY USING BTREE (`id`)
-) ENGINE=InnoDB
-AUTO_INCREMENT=13 ROW_FORMAT=DYNAMIC CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
+  `id` int NOT NULL AUTO_INCREMENT,
+  `entity` varchar(100) DEFAULT NULL,
+  `entitytype` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/* Data for the `entities` table  (LIMIT 0,500) */
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-INSERT INTO `entities` (`id`, `entity`, `entitytype`) VALUES
-  (1,'SANTANDER RIO','RIO'),
-  (2,'NARANJA X','NX'),
-  (3,'MERCADO PAGO/CREDITO','MP'),
-  (4,'UALA','UA'),
-  (5,'SATOSHITANGO','ST'),
-  (6,'IOL','IOL'),
-  (7,'PERSONAL PLAY','PPY'),
-  (8,'SUPERVIELLE','SUP');
-COMMIT;
-
+-- Dump completed on 2026-02-02 23:32:16
