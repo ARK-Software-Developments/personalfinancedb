@@ -1,26 +1,47 @@
-/* Structure for the `cards` table : */
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: personalfinance
+-- ------------------------------------------------------
+-- Server version	8.0.42
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `cards`
+--
+
+DROP TABLE IF EXISTS `cards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cards` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `cardname` VARCHAR(50) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `closingdate` DATETIME DEFAULT NULL,
-  `expirationdate` DATETIME DEFAULT NULL,
-  `entityid` INTEGER DEFAULT NULL,
-  `active` TINYINT(1) DEFAULT NULL,
-  PRIMARY KEY USING BTREE (`id`),
-  KEY `fk_entities_entityid_idx` USING BTREE (`entityid`),
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cardname` varchar(50) DEFAULT NULL,
+  `closingdate` datetime DEFAULT NULL,
+  `expirationdate` datetime DEFAULT NULL,
+  `entityid` int DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_entities_entityid_idx` (`entityid`),
   CONSTRAINT `fk_entities_entityid` FOREIGN KEY (`entityid`) REFERENCES `entities` (`id`)
-) ENGINE=InnoDB
-AUTO_INCREMENT=11 ROW_FORMAT=DYNAMIC CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/* Data for the `cards` table  (LIMIT 0,500) */
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-INSERT INTO `cards` (`id`, `cardname`, `closingdate`, `expirationdate`, `entityid`, `active`) VALUES
-  (1,'VISA RIO','2026-01-02 00:00:00','2025-12-10 00:00:00',1,1),
-  (2,'AMERICAN EXPRESS RIO','2026-01-02 00:00:00','2025-12-13 00:00:00',1,1),
-  (3,'VISA NX','2026-01-27 00:00:00','2025-12-10 00:00:00',2,1),
-  (4,'MASTER CARD NX','2026-01-27 00:00:00','2025-12-10 00:00:00',2,1),
-  (5,'VISA VIRTUAL NX','2026-01-27 00:00:00','2025-12-10 00:00:00',2,1),
-  (6,'MASTER CARD MC','2026-01-27 00:00:00','2025-12-10 00:00:00',3,1);
-COMMIT;
-
+-- Dump completed on 2026-02-02 23:32:16

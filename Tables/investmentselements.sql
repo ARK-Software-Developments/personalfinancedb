@@ -16,19 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `duedatesschedule`
+-- Table structure for table `investmentselements`
 --
 
-DROP TABLE IF EXISTS `duedatesschedule`;
+DROP TABLE IF EXISTS `investmentselements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `duedatesschedule` (
+CREATE TABLE `investmentselements` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `scheduledateexpiration` datetime DEFAULT NULL,
-  `typeofexpenseid` int DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `investmentid` int NOT NULL,
+  `quantity` int NOT NULL,
+  `unitamount` decimal(10,2) NOT NULL,
+  `taxamount` decimal(10,2) NOT NULL,
+  `operationdate` datetime NOT NULL,
+  `operationnumber` varchar(45) NOT NULL,
+  `investmentamount` decimal(10,2) NOT NULL,
+  `resultingamount` decimal(10,2) NOT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `investmentinstrumentsid` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `investmentselements_investments_FK` (`investmentid`),
+  KEY `investmentselements_investmentinstruments_FK` (`investmentinstrumentsid`),
+  CONSTRAINT `investmentselements_investmentinstruments_FK` FOREIGN KEY (`investmentinstrumentsid`) REFERENCES `investmentinstruments` (`id`),
+  CONSTRAINT `investmentselements_investments_FK` FOREIGN KEY (`investmentid`) REFERENCES `investments` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -40,4 +51,4 @@ CREATE TABLE `duedatesschedule` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-02 23:32:17
+-- Dump completed on 2026-02-02 23:32:16

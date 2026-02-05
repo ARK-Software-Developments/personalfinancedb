@@ -16,19 +16,18 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `duedatesschedule`
+-- Table structure for table `investmenttype`
 --
 
-DROP TABLE IF EXISTS `duedatesschedule`;
+DROP TABLE IF EXISTS `investmenttype`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `duedatesschedule` (
+CREATE TABLE `investmenttype` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `scheduledateexpiration` datetime DEFAULT NULL,
-  `typeofexpenseid` int DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
+  `denomination` varchar(200) NOT NULL,
+  `type` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -40,4 +39,4 @@ CREATE TABLE `duedatesschedule` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-02 23:32:17
+-- Dump completed on 2026-02-02 23:32:15
