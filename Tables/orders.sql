@@ -1,30 +1,49 @@
-/* Structure for the `orders` table : */
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: personalfinance
+-- ------------------------------------------------------
+-- Server version	8.0.42
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `number` INTEGER DEFAULT NULL,
-  `orderdate` DATETIME DEFAULT NULL,
-  `paymentdate` DATETIME DEFAULT NULL,
-  `datereceived` DATETIME DEFAULT NULL,
-  `totalamount` DECIMAL(10,2) DEFAULT NULL,
-  `resourcetype` VARCHAR(45) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `statusid` INTEGER DEFAULT NULL,
-  PRIMARY KEY USING BTREE (`id`),
-  KEY `fx_statusid_status_idx` USING BTREE (`statusid`),
+  `id` int NOT NULL AUTO_INCREMENT,
+  `number` int DEFAULT NULL,
+  `orderdate` datetime DEFAULT NULL,
+  `paymentdate` datetime DEFAULT NULL,
+  `datereceived` datetime DEFAULT NULL,
+  `totalamount` decimal(10,2) DEFAULT NULL,
+  `resourcetype` varchar(45) DEFAULT NULL,
+  `statusid` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fx_statusid_status_idx` (`statusid`),
   CONSTRAINT `fx_statusid_status` FOREIGN KEY (`statusid`) REFERENCES `status` (`id`)
-) ENGINE=InnoDB
-AUTO_INCREMENT=19 ROW_FORMAT=DYNAMIC CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/* Data for the `orders` table  (LIMIT 0,500) */
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-INSERT INTO `orders` (`id`, `number`, `orderdate`, `paymentdate`, `datereceived`, `totalamount`, `resourcetype`, `statusid`) VALUES
-  (11,64536,'2025-09-10 00:00:00','2025-09-30 00:00:00','2025-09-30 00:00:00',45800.00,'AVON',4),
-  (12,91208,'2025-07-22 00:00:00','2025-07-26 00:00:00','2025-07-31 00:00:00',38900.00,'AVON',4),
-  (13,43449,'2025-08-13 00:00:00','2025-08-20 00:00:00','2025-08-31 00:00:00',19400.00,'AVON',4),
-  (14,34948,'2025-10-22 00:00:00','2025-10-28 00:00:00','2025-10-31 00:00:00',53700.00,'AVON',4),
-  (15,45258,'2025-03-13 00:00:00','2025-03-09 00:00:00','2025-03-31 00:00:00',55323.00,'AVON',4),
-  (16,20114,'2025-11-17 00:00:00','2025-12-09 00:00:00','2025-12-22 00:00:00',37580.00,'AVON',4),
-  (17,88269,'2025-12-05 00:00:00','2025-12-23 00:00:00','2026-01-09 00:00:00',49500.00,'AVON',4),
-  (18,54877,'2025-12-22 00:00:00','2026-01-06 00:00:00','2026-01-12 00:00:00',53000.00,'ROPA-ROXANA',4);
-COMMIT;
-
+-- Dump completed on 2026-02-02 23:32:16

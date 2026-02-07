@@ -1,21 +1,54 @@
-/* Structure for the `balance` table : */
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: localhost    Database: personalfinance
+-- ------------------------------------------------------
+-- Server version	8.0.42
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `balance`
+--
+
+DROP TABLE IF EXISTS `balance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `balance` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `concept` VARCHAR(45) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `january` DECIMAL(10,2) DEFAULT NULL,
-  `february` DECIMAL(10,2) DEFAULT NULL,
-  `march` DECIMAL(10,2) DEFAULT NULL,
-  `april` DECIMAL(10,2) DEFAULT NULL,
-  `may` DECIMAL(10,2) DEFAULT NULL,
-  `june` DECIMAL(10,2) DEFAULT NULL,
-  `july` DECIMAL(10,2) DEFAULT NULL,
-  `august` DECIMAL(10,2) DEFAULT NULL,
-  `september` DECIMAL(10,2) DEFAULT NULL,
-  `october` DECIMAL(10,2) DEFAULT NULL,
-  `november` DECIMAL(10,2) DEFAULT NULL,
-  `december` DECIMAL(10,2) DEFAULT NULL,
-  `year` INTEGER DEFAULT NULL,
-  PRIMARY KEY USING BTREE (`id`)
-) ENGINE=InnoDB
-AUTO_INCREMENT=11 ROW_FORMAT=DYNAMIC CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
+  `id` int NOT NULL AUTO_INCREMENT,
+  `concept` varchar(45) DEFAULT NULL,
+  `january` decimal(10,2) DEFAULT NULL,
+  `february` decimal(10,2) DEFAULT NULL,
+  `march` decimal(10,2) DEFAULT NULL,
+  `april` decimal(10,2) DEFAULT NULL,
+  `may` decimal(10,2) DEFAULT NULL,
+  `june` decimal(10,2) DEFAULT NULL,
+  `july` decimal(10,2) DEFAULT NULL,
+  `august` decimal(10,2) DEFAULT NULL,
+  `september` decimal(10,2) DEFAULT NULL,
+  `october` decimal(10,2) DEFAULT NULL,
+  `november` decimal(10,2) DEFAULT NULL,
+  `december` decimal(10,2) DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-02-02 23:32:16
