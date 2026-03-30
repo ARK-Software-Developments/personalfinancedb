@@ -24,6 +24,7 @@ CREATE DEFINER = 'root'@'localhost' PROCEDURE `spBillsUpdate`(
         IN `pPaid` TINYINT(1),
         IN `pYear` INTEGER,
         IN `pObservations` VARCHAR(255),
+        IN `pResourcePayment` VARCHAR(45),
         IN `pActive` TINYINT(1)
     )
     NOT DETERMINISTIC
@@ -53,6 +54,7 @@ BEGIN
 	`paid` = pPaid,
 	`year` = pYear,
 	`observations` = UPPER(pObservations),
+    `b`.`resourcepayment` = pResourcePayment,
 	`active` = pActive
 	WHERE `id` = pId;
 END$$

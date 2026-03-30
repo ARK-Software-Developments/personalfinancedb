@@ -37,6 +37,7 @@ BEGIN
 		`b`.`paid`,
 		`b`.`year`,
 		`b`.`observations`,
+		`b`.`resourcepayment`,
 		`b`.`active`
 	FROM `bills` AS b    
     INNER JOIN `typeofexpense` AS toe ON `b`.`typeofexpenseid` = `toe`.`id`

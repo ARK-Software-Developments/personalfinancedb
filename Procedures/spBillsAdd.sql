@@ -23,6 +23,7 @@ CREATE DEFINER = 'root'@'localhost' PROCEDURE `spBillsAdd`(
         IN `pPaid` TINYINT(1),
         IN `pYear` INTEGER,
         IN `pObservations` VARCHAR(255),
+        IN `pResourcePayment` VARCHAR(45),
         IN `pActive` TINYINT(1)
     )
     NOT DETERMINISTIC
@@ -31,9 +32,9 @@ CREATE DEFINER = 'root'@'localhost' PROCEDURE `spBillsAdd`(
     COMMENT ''
 BEGIN
 	INSERT INTO `bills` 
-		(`typeofexpenseid`, `summary`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `wallet`, `verified`, `reserved`, `paid`, `year`, `observations`, `active`)
+		(`typeofexpenseid`, `summary`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `wallet`, `verified`, `reserved`, `paid`, `year`, `observations`, `resourcepayment`, `active`)
 	VALUES
-		(pTypeofexpenseid, UPPER(pSummary), pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, UPPER(pObservations), pActive);
+		(pTypeofexpenseid, UPPER(pSummary), pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pWallet, pVerified, pReserved, pPaid, pYear, UPPER(pObservations), pResourcePayment, pActive);
 END$$
 
 DELIMITER ;

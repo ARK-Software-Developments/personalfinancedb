@@ -12,7 +12,7 @@ BEGIN
     `notificationdate`,
     `title`,
     `type`,
-    `messaje`,
+    REPLACE(`messaje`, '{0}', DATE_FORMAT(`notificationdate`, '%d/%m/%Y')) AS messaje,
    `to`,
     `app`,
     `level`,
