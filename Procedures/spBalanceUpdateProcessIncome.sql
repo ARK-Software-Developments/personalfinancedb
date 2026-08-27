@@ -86,6 +86,63 @@ BEGIN
 	WHERE
 		`year` = pYear
 			AND `concept` = 'INGRESO';
+
+	-- Actualiza el concept BALANCE
+    SET pAmountBalance = pAmountIncome - pAmountBill;
+    
+    UPDATE `balance` 
+	SET 
+		`january` = CASE
+			WHEN pMonth = 1 THEN pAmountBalance
+			ELSE `january`
+		END,
+		`february` = CASE
+			WHEN pMonth = 2 THEN pAmountBalance
+			ELSE `february`
+		END,
+		`march` = CASE
+			WHEN pMonth = 3 THEN pAmountBalance
+			ELSE `march`
+		END,
+		`april` = CASE
+			WHEN pMonth = 4 THEN pAmountBalance
+			ELSE `april`
+		END,
+		`may` = CASE
+			WHEN pMonth = 5 THEN pAmountBalance
+			ELSE `may`
+		END,
+		`june` = CASE
+			WHEN pMonth = 6 THEN pAmountBalance
+			ELSE `june`
+		END,
+		`july` = CASE
+			WHEN pMonth = 7 THEN pAmountBalance
+			ELSE `july`
+		END,
+		`august` = CASE
+			WHEN pMonth = 8 THEN pAmountBalance
+			ELSE `august`
+		END,
+		`september` = CASE
+			WHEN pMonth = 9 THEN pAmountBalance
+			ELSE `september`
+		END,
+		`october` = CASE
+			WHEN pMonth = 10 THEN pAmountBalance
+			ELSE `october`
+		END,
+		`november` = CASE
+			WHEN pMonth = 11 THEN pAmountBalance
+			ELSE `november`
+		END,
+		`december` = CASE
+			WHEN pMonth = 12 THEN pAmountBalance
+			ELSE `december`
+		END
+    WHERE
+		`year` = pYear
+			AND `concept` = 'BALANCE';
 	SET SQL_SAFE_UPDATES = 1;
 END$$
 

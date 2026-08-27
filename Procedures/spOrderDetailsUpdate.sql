@@ -33,6 +33,14 @@ BEGIN
 	`to` = pTo,
 	`statusid` = pStatus
 	WHERE `id` = pId;
+
+    UPDATE `orders`
+	SET `totalamount` = (
+		SELECT SUM(IFNULL(`subtotal`, 0))
+		FROM `orderdetails`
+		WHERE `ordersid` = pOrderId
+	)
+	WHERE `id` = pOrderId;
 END$$
 
 DELIMITER ;

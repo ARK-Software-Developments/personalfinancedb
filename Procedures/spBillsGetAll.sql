@@ -43,7 +43,7 @@ BEGIN
     INNER JOIN `typeofexpense` AS toe ON `b`.`typeofexpenseid` = `toe`.`id`
     INNER JOIN `categories` AS c ON  `toe`.`categoriesid` =  `c`.`id`
     INNER JOIN `entities` AS e ON  `b`.`wallet` =  `e`.`id`
-    WHERE `b`.`year` = pYear AND `b`.`active` = pActive;
+    WHERE `b`.`year` = pYear;
 END$$
 
 DELIMITER ;

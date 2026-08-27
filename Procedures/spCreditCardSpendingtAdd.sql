@@ -31,7 +31,7 @@ BEGIN
 	INSERT INTO `creditcardspending`
 		(`cardsid`, `purchasingentity`, `details`, `numberinstallments`, `january`, `february`, `march`, `april`, `may`, `june`, `july`, `august`, `september`, `october`, `november`, `december`, `year`, `verified`, `paid`)
 	VALUES
-		(pCardsId, UCASE(pPurchasingEntity), UCASE(pDetails), pNumberInstallments, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pYear, pVerified, pPaid);
+		(pCardsId, UCASE(pPurchasingEntity), UCASE(pDetails), pNumberInstallments, pJanuary, pFebruary, pMarch, pApril, pMay, pJune, pJuly, pAugust, pSeptember, pOctober, pNovember, pDecember, pYear, 1, pPaid);
         
         SELECT LAST_INSERT_ID() AS LastInsertedId;
         

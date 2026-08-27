@@ -21,6 +21,13 @@ BEGIN
 	`totalamount` = pMontoTotal,
 	`statusid` = pEstado
 	WHERE `id` = pId;
+
+    -- Si el estado es 4, actualizar orderdetails
+    IF pEstado = 4 THEN
+        UPDATE `orderdetails`
+        SET `statusid` = pEstado
+        WHERE `ordersid` = pId;
+    END IF;
 END$$
 
 DELIMITER ;
