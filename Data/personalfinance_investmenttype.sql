@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `duedatesschedule`
+-- Dumping data for table `investmenttype`
 --
 
-LOCK TABLES `duedatesschedule` WRITE;
-/*!40000 ALTER TABLE `duedatesschedule` DISABLE KEYS */;
-INSERT INTO `duedatesschedule` VALUES (1,'2026-01-10 00:00:00',3,1),(2,'2026-01-31 00:00:00',4,1),(3,'2026-01-31 00:00:00',7,1),(4,'2026-01-15 00:00:00',28,1),(5,'2026-01-22 00:00:00',30,1),(6,'2026-01-17 00:00:00',31,1),(7,'2026-01-23 00:00:00',32,1),(8,'2026-01-15 00:00:00',22,1),(9,'2026-01-29 00:00:00',22,1),(10,'2026-01-31 00:00:00',14,1),(11,'2026-01-21 00:00:00',26,1),(12,'2026-01-10 00:00:00',1,1),(13,'2026-01-31 00:00:00',8,1),(14,'2026-01-31 00:00:00',19,1),(15,'2026-01-15 00:00:00',21,1);
-/*!40000 ALTER TABLE `duedatesschedule` ENABLE KEYS */;
+LOCK TABLES `investmenttype` WRITE;
+/*!40000 ALTER TABLE `investmenttype` DISABLE KEYS */;
+INSERT INTO `investmenttype` VALUES (1,'ACCIONES NAC','ACC'),(2,'CEDEARS','CED'),(3,'BONOS','BON'),(4,'FONDOS INVERSION','FINV'),(5,'PLAZOS FIJOS','PF'),(6,'LETRAS','LET'),(7,'CAUCIONES','CAU');
+/*!40000 ALTER TABLE `investmenttype` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

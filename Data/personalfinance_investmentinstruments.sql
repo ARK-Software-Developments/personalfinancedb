@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `duedatesschedule`
+-- Dumping data for table `investmentinstruments`
 --
 
-LOCK TABLES `duedatesschedule` WRITE;
-/*!40000 ALTER TABLE `duedatesschedule` DISABLE KEYS */;
-INSERT INTO `duedatesschedule` VALUES (1,'2026-01-10 00:00:00',3,1),(2,'2026-01-31 00:00:00',4,1),(3,'2026-01-31 00:00:00',7,1),(4,'2026-01-15 00:00:00',28,1),(5,'2026-01-22 00:00:00',30,1),(6,'2026-01-17 00:00:00',31,1),(7,'2026-01-23 00:00:00',32,1),(8,'2026-01-15 00:00:00',22,1),(9,'2026-01-29 00:00:00',22,1),(10,'2026-01-31 00:00:00',14,1),(11,'2026-01-21 00:00:00',26,1),(12,'2026-01-10 00:00:00',1,1),(13,'2026-01-31 00:00:00',8,1),(14,'2026-01-31 00:00:00',19,1),(15,'2026-01-15 00:00:00',21,1);
-/*!40000 ALTER TABLE `duedatesschedule` ENABLE KEYS */;
+LOCK TABLES `investmentinstruments` WRITE;
+/*!40000 ALTER TABLE `investmentinstruments` DISABLE KEYS */;
+INSERT INTO `investmentinstruments` VALUES (1,'INVERSION RAPIDA','IR',4),(2,'FONDO 24/7','FDO247',4),(3,'IOL Cash Management','IOLCAMA',4),(4,'IOL Portafolio Potenciado','IOLPORA',4),(5,'Premier Renta Variable','PRTAVAB',4),(6,'Grupo Financiero Valores','VALO',1),(7,'Ternium Argentina Sa','TXAR',1),(8,'Cedear Barrick Mining Corporation','B',2),(9,'Cedear Chevron Corp.','CVX',2),(10,'Cedear Nvidia Corporation','NVDA',2),(11,'Cedear Occidental Petroleum Corporation','OXY',2),(12,'Cedear Pan American Silver Cor','PAAS',2),(13,'Cedear Petroleo Brasileiro S.A','PBR',2),(14,'Cedear Schlumberger Limited','SLB',2),(15,'Cedear Vista Oil & Gas Sab De','VIST',2),(16,'Cedear Walmart Inc.','WMT',2),(17,'Cedear Exxon Mobil Corporation','XOM',2),(18,'Bono Rep. Argentina Usd Step Up 2030','AL30',3),(19,'Plazo Fijo 365 Dias','PJ365',5),(20,'Lt Rep Arg Tamar Cap 182 Ds V27/02/26','M27F6',6),(21,'Lt Rep Arg Cap 182 Ds V27/02/26 $ Cg','S27F6',6);
+/*!40000 ALTER TABLE `investmentinstruments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
