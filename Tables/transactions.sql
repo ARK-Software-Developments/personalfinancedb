@@ -32,6 +32,7 @@ CREATE TABLE `transactions` (
   `observations` varchar(255) DEFAULT NULL,
   `cardsid` int DEFAULT NULL,
   `creditcardspendingid` int DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fx_creditcardspendingid_creditcardspending_idx` (`creditcardspendingid`),
   CONSTRAINT `fx_creditcardspendingid_creditcardspending` FOREIGN KEY (`creditcardspendingid`) REFERENCES `creditcardspending` (`id`)

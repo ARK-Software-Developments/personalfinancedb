@@ -26,7 +26,8 @@ BEGIN
 		`c`.`entityid`,
 		`e`.`entity`,
 		`e`.`entitytype`,
-		`t`.`creditcardspendingid`
+		`t`.`creditcardspendingid`,
+        `t`.`amount`
 	FROM
 		`transactions` AS `t`
 			INNER JOIN
