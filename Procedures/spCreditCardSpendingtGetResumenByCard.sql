@@ -27,8 +27,10 @@ BEGIN
 	WHERE
 		`c`.`year` = pYear
 		AND `c`.`cardsid` = pCardsId
+		AND `c`.`paid` = 0
 	GROUP BY 
-		`c`.`purchasingentity`, `ref`.`referencename`;
+		`c`.`purchasingentity`, `ref`.`referencename`
+	ORDER BY `c`.`purchasingentity` ASC;
 END$$
 
 DELIMITER ;

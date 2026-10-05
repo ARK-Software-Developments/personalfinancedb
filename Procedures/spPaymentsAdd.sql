@@ -28,8 +28,8 @@ BEGIN
 		`reasonforpayment`
 	)
 	VALUES (
-		pRegistrationDate,
-		pDateOfPayment,
+		TIMESTAMP(DATE(pRegistrationDate), CURTIME()),
+		TIMESTAMP(DATE(pDateOfPayment), CURTIME()),
 		UPPER(pRegistrationCode),
 		pPaymentResourceId,
 		UPPER(pPaymentType),

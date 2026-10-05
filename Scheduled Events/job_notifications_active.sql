@@ -10,7 +10,7 @@ CREATE DEFINER = 'root'@'localhost' EVENT `job_notifications_active`
 UPDATE `notification`
 SET`active` = 1,
 `notificationdate` = DATE_ADD(`notificationdate`, INTERVAL 1 MONTH)
-WHERE `id` > 0$$
+WHERE `id` > 0 AND `app` = 'alert/email'$$
 
 DELIMITER ;
 

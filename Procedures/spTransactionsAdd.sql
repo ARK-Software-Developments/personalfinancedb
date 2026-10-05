@@ -22,15 +22,16 @@ BEGIN
     DECLARE vLastInsertId INT;
     DECLARE vAmount DECIMAL(10,2);
 
-	INSERT INTO `transactions` (`transactioncode`, `purchaseorder`, `associatedentity`, `transactiondate`, `summary`, `observations`, `cardsid`, `creditcardspendingid`, `amount`)
-	VALUES (pTransactionCode, pPurchaseOrder, UPPER(pAssociatedEntity), pTransactionDate, UPPER(pSummary), UPPER(pObservations), pCardId, pCreditCardsPendingId, pAmount);
+	INSERT INTO `transactions` (`transactioncode`, `purchaseorder`, `associatedentity`, `transactiondate`, `summary`, `observations`, `cardsid`, `creditcardspendingid`, `amount`, `accountingmonth`)
+	VALUES (pTransactionCode, pPurchaseOrder, UPPER(pAssociatedEntity), pTransactionDate, UPPER(pSummary), UPPER(pObservations), pCardId, pCreditCardsPendingId, pAmount, pMonth);
 
     SET vLastInsertId = LAST_INSERT_ID();
 
     SELECT SUM(IFNULL(`amount`, 0))
     INTO vAmount
     FROM `transactions`
-    where `creditcardspendingid` = pCreditCardsPendingId;
+    WHERE `creditcardspendingid` = pCreditCardsPendingId
+	AND `accountingmonth` = pMonth;;
 
     UPDATE `creditcardspending` 
 	SET 
@@ -84,6 +85,31 @@ BEGIN
 		END
 	WHERE
         `id` = pCreditCardsPendingId;
+
+	IF UPPER(pAssociatedEntity) IN ('MICROSOFT', 'SPOTIFY', 'GOOGLE KISMIA DATINUSA', 'YOUTUBEPREMIUN', 'PARAMOUNT') THEN
+
+		INSERT INTO `transactions`
+		(
+			`creditcardspendingid`,
+			`transactioncode`,
+			`purchaseorder`,
+			`associatedentity`,
+			`transactiondate`,
+			`summary`,
+			`observations`,
+			`cardsid`,
+			`amount`
+		)
+		SELECT pCreditCardsPendingId, 551388, pTransactionCode, UPPER(pAssociatedEntity), pTransactionDate,
+			'IIBB SERV DIGITALES', 'PERCEP IBB SERV DIGITALES (BUENOS AIRES)', pCardId, (pAmount * 0.02)
+		UNION ALL
+		SELECT pCreditCardsPendingId, 551388, pTransactionCode, UPPER(pAssociatedEntity), pTransactionDate,
+			'IVA RG 4240 21%', 'IVA RG 4240 21% SERV.DIGITAL', pCardId, (pAmount * 0.21)
+		UNION ALL
+		SELECT pCreditCardsPendingId, 551388, pTransactionCode, UPPER(pAssociatedEntity), pTransactionDate,
+			'PERCEPCION RG 5617 ARCA', CONCAT('PERCEPCION RG 5617 ARCA (', REPLACE(REPLACE(FORMAT(pAmount, 2), ',', '#'), '.', ','),')'), pCardId, (pAmount * 0.30);
+
+	END IF;
 
     SELECT vLastInsertId AS LastInsertedId;
 END$$
