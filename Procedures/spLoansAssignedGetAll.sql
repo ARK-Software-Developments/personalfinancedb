@@ -17,11 +17,18 @@ BEGIN
 		l.`capitalamount`,
 		l.`totalamount`,
 		l.`numberofinstallments`,
+        l.`firstinstallmentamount`,
         l.`entityid`,
         e.`entity`,
         e.`entitytype`,
         l.`transactioncode`,
-		l.`state`
+		l.`state`,
+    (SELECT 
+            COUNT(ld.`id`)
+        FROM
+            `loansassigneddetails` ld
+        WHERE
+            ld.`loansassignedid` = l.`id`) AS quantityinstallments
 	FROM `loansassigned` l
     LEFT JOIN `entities` e ON l.`entityid` = e.`id`;
 END$$

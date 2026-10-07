@@ -32,6 +32,7 @@ BEGIN
 		`totalamount` = inTotalAmount,
 		`transactioncode` = UPPER(inTransactionCode),
 		`numberofinstallments` = inNumberOfInstallments,
+        `firstinstallmentamount` = inFirstInstallmentAmount,
 		`entityid` = inEntityId,
 		`state` = UPPER(inState)
 	WHERE
